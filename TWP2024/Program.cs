@@ -1,7 +1,7 @@
 ﻿namespace TPW2024 {
     public class Pies {
 
-        Boolean isPies = true;
+        Boolean isPies = true; //Czy wybrano psa?
 
         public Boolean CheckPies () {
                 return isPies;
