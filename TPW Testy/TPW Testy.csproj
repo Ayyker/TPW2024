@@ -19,7 +19,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\TWP2024\TPW2024.csproj" />
+    <ProjectReference Include="..\TPW2024\TPW2024.csproj" />
   </ItemGroup>
 
   <ItemGroup>
