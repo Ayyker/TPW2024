@@ -16,11 +16,17 @@ namespace presentation_layer.ViewModels
     public class MainViewModel : INotifyPropertyChanged
     {
         private readonly BallCounterModel _ballCounterModel = new BallCounterModel();
+        public ICommand ExitCommand { get; private set; }
 
         public MainViewModel()
         {
             AddBallCommand = new RelayCommand(AddBall);
             DeleteBallCommand = new RelayCommand(DeleteBall);
+            ExitCommand = new RelayCommand(ExitApplication);
+        }
+        private void ExitApplication(object parameter)
+        {
+            Application.Current.Shutdown();
         }
 
         private void AddBall(object obj)

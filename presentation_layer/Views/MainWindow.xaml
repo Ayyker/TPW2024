@@ -36,7 +36,7 @@
 
         <Button Grid.Row="4" Grid.Column="1" Grid.ColumnSpan="2" Content="add pool ball" Command="{Binding AddBallCommand}" />
         <Button Grid.Row="6" Grid.Column="1" Grid.ColumnSpan="2" Content="delete pool ball" Command="{Binding DeleteBallCommand}"/>
-        <Button Grid.Row="8" Grid.Column="1" Grid.ColumnSpan="2" Content="exit" />
+        <Button Grid.Row="8" Grid.Column="1" Grid.ColumnSpan="2" Content="exit" Command="{Binding ExitCommand}"/>
         <TextBlock Grid.Row="2" Grid.Column="1"   TextWrapping="WrapWithOverflow" VerticalAlignment="Center" TextAlignment="Center" >Count of balls:</TextBlock>
         <TextBlock Grid.Row="2" Grid.Column="2" VerticalAlignment="Center" TextAlignment="Center" Text="{Binding BallCounter}"/>
 
