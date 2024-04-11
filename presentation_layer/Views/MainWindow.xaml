@@ -1,0 +1,52 @@
+﻿<Window x:Class="presentation_layer.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:presentation_layer"
+        mc:Ignorable="d"
+        Title="Bilard" Height="450" Width="800">
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition />
+            <ColumnDefinition />
+            <ColumnDefinition />
+            <ColumnDefinition />
+            <ColumnDefinition />
+            <ColumnDefinition />
+            <ColumnDefinition />
+            <ColumnDefinition />
+            <ColumnDefinition />
+            <ColumnDefinition />
+            <ColumnDefinition />
+            <ColumnDefinition />
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition />
+            <RowDefinition />
+            <RowDefinition />
+            <RowDefinition />
+            <RowDefinition />
+            <RowDefinition />
+            <RowDefinition />
+            <RowDefinition />
+            <RowDefinition />
+            <RowDefinition />
+        </Grid.RowDefinitions>
+
+        <Button Grid.Row="4" Grid.Column="1" Grid.ColumnSpan="2" Content="add pool ball" Command="{Binding AddBallCommand}" />
+        <Button Grid.Row="6" Grid.Column="1" Grid.ColumnSpan="2" Content="delete pool ball" Command="{Binding DeleteBallCommand}"/>
+        <Button Grid.Row="8" Grid.Column="1" Grid.ColumnSpan="2" Content="exit" />
+        <TextBlock Grid.Row="2" Grid.Column="1"   TextWrapping="WrapWithOverflow" VerticalAlignment="Center" TextAlignment="Center" >Count of balls:</TextBlock>
+        <TextBlock Grid.Row="2" Grid.Column="2" VerticalAlignment="Center" TextAlignment="Center" Text="{Binding BallCounter}"/>
+
+
+        <Border Grid.Row="3" Grid.RowSpan="6" Grid.Column="4" Grid.ColumnSpan="7" x:Name="CanvasBorder" BorderBrush="SaddleBrown">
+            <Canvas  Background="LightGreen">
+
+            </Canvas>
+
+        </Border>
+        
+    </Grid>
+</Window>

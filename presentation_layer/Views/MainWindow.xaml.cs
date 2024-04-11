@@ -1,4 +1,5 @@
-﻿using System;
+﻿using presentation_layer.ViewModels;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -23,6 +24,8 @@ namespace presentation_layer
         public MainWindow()
         {
             InitializeComponent();
+            DataContext = new MainViewModel();
+            CanvasBorder.BorderThickness = new Thickness(3);
         }
     }
 }
