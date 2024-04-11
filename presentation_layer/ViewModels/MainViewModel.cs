@@ -9,45 +9,39 @@ using System.Windows;
 using System.Windows.Input;
 using static presentation_layer.ViewModels.RelayCommand;
 
+using presentation_layer.Models;
+
 namespace presentation_layer.ViewModels
 {
     public class MainViewModel : INotifyPropertyChanged
     {
+        private readonly BallCounterModel _ballCounterModel = new BallCounterModel();
+
         public MainViewModel()
         {
-            BallCounter = 0;
             AddBallCommand = new RelayCommand(AddBall);
             DeleteBallCommand = new RelayCommand(DeleteBall);
-
         }
 
         private void AddBall(object obj)
         {
-            if(BallCounter < 16)
-            {
-                BallCounter++;
-            }
-        } 
-        private void DeleteBall(object obj)
-        {
-            if(BallCounter > 0)
-            {
-                BallCounter--;
-            }
+            _ballCounterModel.AddBall();
+            OnPropertyChanged(nameof(BallCounter));
         }
 
-        private int _ballCounter;
+        private void DeleteBall(object obj)
+        {
+            _ballCounterModel.DeleteBall();
+            OnPropertyChanged(nameof(BallCounter));
+        }
 
         public ICommand AddBallCommand { get; set; }
         public ICommand DeleteBallCommand { get; set; }
 
         public int BallCounter
         {
-            get { return _ballCounter; }
-            set 
-            { _ballCounter = value;
-                OnPropertyChanged();
-            }
+            get { return _ballCounterModel.BallCount; }
+            // OnPropertyChanged wywołuje się teraz w AddBall i DeleteBall
         }
 
         //this event is called when any property changed
