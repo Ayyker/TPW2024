@@ -16,12 +16,9 @@ namespace presentation_layer.Models
             set { _ballCount = value; }
         }
 
-        public void AddBall()
+        public void AddBall(int amount)
         {
-            if (_ballCount < 16)
-            {
-                _ballCount++;
-            }
+            _ballCount += amount;
         }
 
         public void DeleteBall()

@@ -8,14 +8,36 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
 using static presentation_layer.ViewModels.RelayCommand;
+using System.Diagnostics;
 
 using presentation_layer.Models;
+using data_layer;
+using logic_layer;
+using System.Xml.Linq;
 
 namespace presentation_layer.ViewModels
 {
     public class MainViewModel : INotifyPropertyChanged
     {
-        private readonly BallCounterModel _ballCounterModel = new BallCounterModel();
+        private  BallCounterModel _ballCounterModel = new BallCounterModel();
+        private  static BallRepository _ballRepository = new BallRepository();
+        private  static SimulationManager _simulationManager = new SimulationManager(_ballRepository);
+        private  SimulationUI _simulationUI = new SimulationUI(_simulationManager);
+
+        private string _amountOfBalls;
+        public string AmountOfBalls
+        {
+            get { return _amountOfBalls; }
+            set
+            {
+                if (_amountOfBalls != value)
+                {
+                    _amountOfBalls = value;
+                    OnPropertyChanged(nameof(AmountOfBalls));
+                }
+            }
+        }
+
         public ICommand ExitCommand { get; private set; }
 
         public MainViewModel()
@@ -28,10 +50,23 @@ namespace presentation_layer.ViewModels
         {
             Application.Current.Shutdown();
         }
-
+      
         private void AddBall(object obj)
         {
-            _ballCounterModel.AddBall();
+            if (_amountOfBalls.All(char.IsDigit))
+            {
+                int amount = int.Parse(_amountOfBalls.ToString());
+                _ballCounterModel.AddBall(amount);
+                _simulationManager.InitializeSimulation(amount, 100, 100);
+            }
+            
+            
+           
+            Console.Clear();
+            foreach (var ball in _ballRepository.GetBalls())
+            {
+                Console.WriteLine(ball.ToString());
+            }
             OnPropertyChanged(nameof(BallCounter));
         }
 

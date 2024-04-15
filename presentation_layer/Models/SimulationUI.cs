@@ -6,14 +6,14 @@ using System.Threading.Tasks;
 using data_layer;
 using logic_layer;
 
-namespace presentation_layer.ViewModels
+namespace presentation_layer.Models
 {
     public class SimulationUI : ISimulationObserver
     {
         private SimulationManager simulationManager;
         public SimulationUI(SimulationManager manager)
         {
-            this.simulationManager = manager;
+            simulationManager = manager;
             simulationManager.RegisterObserver(this);
         }
 

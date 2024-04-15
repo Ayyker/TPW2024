@@ -46,8 +46,8 @@
             </Canvas>
 
         </Border>
-        <Label Content="insert amount of balls" Grid.Column="1" Grid.ColumnSpan="2" Margin="0,17,0,0" Grid.Row="4" HorizontalAlignment="Center" VerticalAlignment="Top" Width="133" x:Name="AmountOfBalls"/>
-        <TextBox Grid.Column="1" Grid.ColumnSpan="2" HorizontalAlignment="Center" Margin="0,5,0,0" Grid.Row="5" TextWrapping="Wrap" VerticalAlignment="Center" Width="133" TextChanged="TextBox_TextChanged" TextAlignment="Center"/>
+        <Label Content="insert amount of balls" Grid.Column="1" Grid.ColumnSpan="2" Margin="0,17,0,0" Grid.Row="4" HorizontalAlignment="Center" VerticalAlignment="Top" Width="133" />
+        <TextBox Grid.Column="1" Grid.ColumnSpan="2" HorizontalAlignment="Center" Margin="0,5,0,0" Grid.Row="5" TextWrapping="Wrap" VerticalAlignment="Center" Width="133" TextChanged="TextBox_TextChanged" TextAlignment="Center" Name="AmountOfBalls" Text="{Binding AmountOfBalls}"/>
 
     </Grid>
 </Window>
