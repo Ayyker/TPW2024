@@ -8,9 +8,8 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
 using static presentation_layer.ViewModels.RelayCommand;
+
 using presentation_layer.Models;
-using logic_layer;
-using System.Collections.ObjectModel;
 
 namespace presentation_layer.ViewModels
 {
@@ -30,7 +29,7 @@ namespace presentation_layer.ViewModels
             Application.Current.Shutdown();
         }
 
-        private void AddBall()
+        private void AddBall(object obj)
         {
             _ballCounterModel.AddBall();
             OnPropertyChanged(nameof(BallCounter));

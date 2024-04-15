@@ -34,7 +34,7 @@
             <RowDefinition />
         </Grid.RowDefinitions>
 
-        <Button Grid.Row="4" Grid.Column="1" Grid.ColumnSpan="2" Content="add pool ball" Command="{Binding AddBallCommand}"  />
+        <Button Grid.Row="4" Grid.Column="1" Grid.ColumnSpan="2" Content="add pool ball" Command="{Binding AddBallCommand}" />
         <Button Grid.Row="6" Grid.Column="1" Grid.ColumnSpan="2" Content="delete pool ball" Command="{Binding DeleteBallCommand}"/>
         <Button Grid.Row="8" Grid.Column="1" Grid.ColumnSpan="2" Content="exit" Command="{Binding ExitCommand}"/>
         <TextBlock Grid.Row="2" Grid.Column="1"   TextWrapping="WrapWithOverflow" VerticalAlignment="Center" TextAlignment="Center" >Count of balls:</TextBlock>
@@ -42,8 +42,8 @@
 
 
         <Border Grid.Row="3" Grid.RowSpan="6" Grid.Column="4" Grid.ColumnSpan="7" x:Name="CanvasBorder" BorderBrush="SaddleBrown">
-            <Canvas  Background="LightGreen" x:Name="MyCanvas" >
-                
+            <Canvas  Background="LightGreen">
+
             </Canvas>
 
         </Border>
