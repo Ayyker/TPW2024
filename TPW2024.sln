@@ -1,4 +1,4 @@
-﻿
+
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.9.34622.214
@@ -7,7 +7,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "logic_layer", "logic_layer\
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "data_layer", "data_layer\data_layer.csproj", "{64CA8C2E-11D3-4C8A-B38E-120AC8347A77}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "presentation_layer", "presentation_layer\presentation_layer.csproj", "{1B9AC4CD-9C09-4E9E-B4BB-4A73B2E2F18D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "presentation_layer", "presentation_layer\presentation_layer.csproj", "{1B9AC4CD-9C09-4E9E-B4BB-4A73B2E2F18D}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
