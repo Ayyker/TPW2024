@@ -1,9 +1,14 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>net8.0</TargetFramework>
+    <TargetFramework>net8.0-windows</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
   </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\data_layer\data_layer.csproj" />
+    <ProjectReference Include="..\presentation_layer\presentation_layer.csproj" />
+  </ItemGroup>
 
 </Project>

@@ -27,5 +27,10 @@ namespace presentation_layer
             DataContext = new MainViewModel();
             CanvasBorder.BorderThickness = new Thickness(3);
         }
+
+        private void TextBox_TextChanged(object sender, TextChangedEventArgs e)
+        {
+
+        }
     }
 }

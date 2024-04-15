@@ -40,7 +40,7 @@ namespace data_layer
             balls.Remove(ball);
         }
 
-        public void UpdateBalls(Ball ball)
+        public void UpdateBalls()
         {
             foreach (Ball b in balls)
             {

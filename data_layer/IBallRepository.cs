@@ -10,7 +10,8 @@ namespace data_layer
     {
         void AddBall(Ball ball);
         IReadOnlyList<Ball> GetBalls();
-        void UpdateBalls(Ball ball);
-        void RemoveBall(Ball ball); 
+        void UpdateBalls();
+        void RemoveBall(Ball ball);
+        void InitializeBalls(int numberOfBalls, int width, int height);
     }
 }

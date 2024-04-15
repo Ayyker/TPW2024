@@ -34,8 +34,7 @@
             <RowDefinition />
         </Grid.RowDefinitions>
 
-        <Button Grid.Row="4" Grid.Column="1" Grid.ColumnSpan="2" Content="add pool ball" Command="{Binding AddBallCommand}" />
-        <Button Grid.Row="6" Grid.Column="1" Grid.ColumnSpan="2" Content="delete pool ball" Command="{Binding DeleteBallCommand}"/>
+        <Button Grid.Row="5" Grid.Column="1" Grid.ColumnSpan="2" Content="add pool ball" Command="{Binding AddBallCommand}" Margin="0,43,0,43" Grid.RowSpan="3" />
         <Button Grid.Row="8" Grid.Column="1" Grid.ColumnSpan="2" Content="exit" Command="{Binding ExitCommand}"/>
         <TextBlock Grid.Row="2" Grid.Column="1"   TextWrapping="WrapWithOverflow" VerticalAlignment="Center" TextAlignment="Center" >Count of balls:</TextBlock>
         <TextBlock Grid.Row="2" Grid.Column="2" VerticalAlignment="Center" TextAlignment="Center" Text="{Binding BallCounter}"/>
@@ -47,6 +46,8 @@
             </Canvas>
 
         </Border>
-        
+        <Label Content="insert amount of balls" Grid.Column="1" Grid.ColumnSpan="2" Margin="0,17,0,0" Grid.Row="4" HorizontalAlignment="Center" VerticalAlignment="Top" Width="133" x:Name="AmountOfBalls"/>
+        <TextBox Grid.Column="1" Grid.ColumnSpan="2" HorizontalAlignment="Center" Margin="0,5,0,0" Grid.Row="5" TextWrapping="Wrap" VerticalAlignment="Center" Width="133" TextChanged="TextBox_TextChanged" TextAlignment="Center"/>
+
     </Grid>
 </Window>

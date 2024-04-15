@@ -3,30 +3,36 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using data_layer;
 
 namespace logic_layer
 {
     public class SimulationManager
     {
-        //to trzeba zmienic
-        double maxWidth = 2;
-        double maxHeight = 2;
-        double maxVelocity = 2;
-        double defaultRadius = 2;
-
-        private List<PoolBall> balls = new List<PoolBall>();
-        private Random random = new Random();
-
-        public void AddBall()
+        private IBallRepository ballRepository;
+        public SimulationManager(IBallRepository ballRepository)
         {
-            double x = random.NextDouble() * maxWidth;
-            double y = random.NextDouble() * maxHeight;
-            double velocityX = random.NextDouble() * maxVelocity;
-            double velocityY = random.NextDouble() * maxVelocity;
-            double radius = defaultRadius;
+            this.ballRepository = ballRepository;
+        }
 
-            var ball = new PoolBall(x, y, velocityX, velocityY, radius);
-            balls.Add(ball);
+        public void InitializeSimulation(int numberOfBalls, int width, int height)
+        {
+            ballRepository.InitializeBalls(numberOfBalls, width, height);
+        }
+
+        public void UpdateSimulation()
+        {
+            ballRepository.UpdateBalls();
+        }
+
+        public void AddBall(Ball ball)
+        {
+            ballRepository.AddBall(ball);
+        }
+
+        public void RemoveBall(Ball ball)
+        {
+            ballRepository.RemoveBall(ball);
         }
     }
 }
