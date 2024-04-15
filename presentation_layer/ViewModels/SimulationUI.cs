@@ -10,6 +10,7 @@ namespace presentation_layer.ViewModels
 {
     public class SimulationUI : ISimulationObserver
     {
+        private SimulationManager simulationManager;
         public SimulationUI(SimulationManager manager)
         {
             this.simulationManager = manager;
@@ -18,16 +19,16 @@ namespace presentation_layer.ViewModels
 
         public void Update()
         {
-            // Odśwież GUI w odpowiedzi na zmiany w symulacji
+            // odswieza GUI w odpowiedzi na zmiany w symulacji
             RefreshDisplay();
         }
 
         private void RefreshDisplay()
         {
-            // Logika odświeżania interfejsu użytkownika
+            // logika odswiezania interfejsu 
         }
 
-        // Zapewnij możliwość odrejestrowania obserwatora, gdy GUI jest zamykane lub nie jest już potrzebne
+        // zapewnia mozliwosc odrejestrowania obserwatora
         public void Detach()
         {
             simulationManager.RemoveObserver(this);

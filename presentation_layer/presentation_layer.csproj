@@ -10,4 +10,8 @@
     <PackageReference Include="Microsoft.CSharp" Version="4.7.0" />
     <PackageReference Include="System.Data.DataSetExtensions" Version="4.5.0" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\data_layer\data_layer.csproj" />
+    <ProjectReference Include="..\logic_layer\logic_layer.csproj" />
+  </ItemGroup>
 </Project>
