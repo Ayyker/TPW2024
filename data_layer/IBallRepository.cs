@@ -9,8 +9,8 @@ namespace data_layer
     public interface IBallRepository
     {
         void AddBall(Ball ball);
-        IEnumerable<Ball> GetBalls();
-        void UpdateBall(Ball ball);
+        IReadOnlyList<Ball> GetBalls();
+        void UpdateBalls(Ball ball);
         void RemoveBall(Ball ball); 
     }
 }
