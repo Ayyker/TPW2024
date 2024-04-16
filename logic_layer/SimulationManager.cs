@@ -7,11 +7,13 @@ using data_layer;
 
 namespace logic_layer
 {
-    public class SimulationManager
+    public class SimulationManager : ISimulationManager
     {
         private IBallRepository ballRepository;
         //tutaj przetrzymywani sa obserwatorzy
         private List<ISimulationObserver> observers;
+
+        private Random random = new Random();
         public SimulationManager(IBallRepository ballRepository, ISimulationObserver observer = null)
         {
             this.ballRepository = ballRepository;
@@ -24,7 +26,17 @@ namespace logic_layer
 
         public void InitializeSimulation(int numberOfBalls, int width, int height)
         {
-            ballRepository.InitializeBalls(numberOfBalls, width, height);
+            for (int i = 0; i < numberOfBalls; i++)
+            {
+                double x = random.NextDouble() * width;
+                double y = random.NextDouble() * height;
+                double velocityX = random.NextDouble() * 2 - 1; //do zmiany
+                double velocityY = random.NextDouble() * 2 - 1; //do zmiany
+                double radius = 5; //do zmiany
+
+                Ball newBall = new Ball(x, y, velocityX, velocityY, radius);
+                AddBall(newBall);
+            }
             NotifyObservers();
         }
 

@@ -12,6 +12,6 @@ namespace data_layer
         IReadOnlyList<Ball> GetBalls();
         void UpdateBalls();
         void RemoveBall(Ball ball);
-        void InitializeBalls(int numberOfBalls, int width, int height);
+        
     }
 }
