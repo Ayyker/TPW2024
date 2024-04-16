@@ -63,11 +63,11 @@ namespace presentation_layer.ViewModels
             {
                 int amount = int.Parse(_amountOfBalls.ToString());
                 _ballCounterModel.AddBall(amount);
-                _simulationManager.InitializeSimulation(amount, 100, 100);
+                _simulationUI.InitializeSimulation(amount, 100, 100);
             }
             
             
-           
+      
             Console.Clear();
             foreach (var ball in _ballRepository.GetBalls())
             {

@@ -33,5 +33,28 @@ namespace presentation_layer.Models
         {
             simulationManager.RemoveObserver(this);
         }
+
+        public void InitializeSimulation(int numberOfBalls, int width, int height)
+        {
+            simulationManager.InitializeSimulation(numberOfBalls, width, height);
+    
+        }
+
+        public void UpdateSimulation()
+        {
+            simulationManager.UpdateSimulation();
+        }
+
+        public void AddBall(Ball ball)
+        {
+            simulationManager.AddBall(ball);
+    
+        }
+
+        public void RemoveBall(Ball ball)
+        {
+            simulationManager.RemoveBall(ball);
+  
+        }
     }
 }
