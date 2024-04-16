@@ -19,10 +19,10 @@ namespace presentation_layer.ViewModels
 {
     public class MainViewModel : INotifyPropertyChanged
     {
-        private  BallCounterModel _ballCounterModel = new BallCounterModel();
-        private  static BallRepository _ballRepository = new BallRepository();
-        private  static SimulationManager _simulationManager = new SimulationManager(_ballRepository);
-        private  SimulationUI _simulationUI = new SimulationUI(_simulationManager);
+        private BallCounterModel _ballCounterModel;
+        private static BallRepository _ballRepository;
+        private static SimulationManager _simulationManager;
+        private SimulationUI _simulationUI;
 
         private string _amountOfBalls;
         public string AmountOfBalls
@@ -38,14 +38,20 @@ namespace presentation_layer.ViewModels
             }
         }
 
-        public ICommand ExitCommand { get; private set; }
+        
 
         public MainViewModel()
         {
             AddBallCommand = new RelayCommand(AddBall);
             DeleteBallCommand = new RelayCommand(DeleteBall);
             ExitCommand = new RelayCommand(ExitApplication);
-        }
+
+            _ballCounterModel = new BallCounterModel();
+
+            _ballRepository = new BallRepository();
+            _simulationManager = new SimulationManager(_ballRepository);
+            _simulationUI = new SimulationUI(_simulationManager);
+    }
         private void ExitApplication(object parameter)
         {
             Application.Current.Shutdown();
@@ -78,6 +84,7 @@ namespace presentation_layer.ViewModels
 
         public ICommand AddBallCommand { get; set; }
         public ICommand DeleteBallCommand { get; set; }
+        public ICommand ExitCommand { get; private set; }
 
         public int BallCounter
         {

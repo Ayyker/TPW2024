@@ -10,10 +10,16 @@ namespace logic_layer
     public class SimulationManager
     {
         private IBallRepository ballRepository;
-        private List<ISimulationObserver> observers = new List<ISimulationObserver>();
-        public SimulationManager(IBallRepository ballRepository)
+        //tutaj przetrzymywani sa obserwatorzy
+        private List<ISimulationObserver> observers;
+        public SimulationManager(IBallRepository ballRepository, ISimulationObserver observer = null)
         {
             this.ballRepository = ballRepository;
+            this.observers = new List<ISimulationObserver>();
+            if (observer != null)
+            {
+                observers.Add(observer);
+            }
         }
 
         public void InitializeSimulation(int numberOfBalls, int width, int height)
