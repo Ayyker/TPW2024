@@ -67,7 +67,7 @@ namespace presentation_layer.ViewModels
             }
             
             
-      
+           
             Console.Clear();
             foreach (var ball in _ballRepository.GetBalls())
             {
