@@ -14,91 +14,136 @@ using presentation_layer.Models;
 using data_layer;
 using logic_layer;
 using System.Xml.Linq;
+using System.Windows.Threading;
 
 namespace presentation_layer.ViewModels
 {
     public class MainViewModel : INotifyPropertyChanged
     {
-        private BallCounterModel _ballCounterModel;
-        private static BallRepository _ballRepository;
-        private static SimulationManager _simulationManager;
-        private SimulationUI _simulationUI;
-
-        private string _amountOfBalls;
-        public string AmountOfBalls
+       public event PropertyChangedEventHandler PropertyChanged;
+        protected virtual void OnPropertyChanged([CallerMemberName] string? propertyName = null)
         {
-            get { return _amountOfBalls; }
-            set
-            {
-                if (_amountOfBalls != value)
-                {
-                    _amountOfBalls = value;
-                    OnPropertyChanged(nameof(AmountOfBalls));
-                }
-            }
+            PropertyChanged.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
 
-        
+        private SimulationModel _simulationModel;
+        private String _textBoxColor;
+        private String _amountOfBalls;
+        public ICommand StartCommand { get; }
+        public ICommand StopCommand { get; }
+        private bool _isStartEnable;
+        private bool _isStopEnable;
+        private bool _isTextFieldEnable;
+
+        private DispatcherTimer _timer;
+        // hard value of size
+        private int _width = 1000;
+        private int _height = 800;
 
         public MainViewModel()
         {
-            AddBallCommand = new RelayCommand(AddBall);
-            DeleteBallCommand = new RelayCommand(DeleteBall);
-            ExitCommand = new RelayCommand(ExitApplication);
+            TextBoxColor = "Green";
+            StartCommand = new RelayCommand(Start, ()=>_isStartEnable);
+            StopCommand = new RelayCommand(Stop, () => IsStopEnable);
+            _simulationModel = new SimulationModel(_width, _height);
+            _amountOfBalls = "47";
 
-            _ballCounterModel = new BallCounterModel();
+            IsStartEnable = true;
+            IsStopEnable = false;
+            IsTextFieldEnable = true;
 
-            _ballRepository = new BallRepository();
-            _simulationManager = new SimulationManager(_ballRepository);
-            _simulationUI = new SimulationUI(_simulationManager);
-    }
-        private void ExitApplication(object parameter)
-        {
-            Application.Current.Shutdown();
+            _timer = new DispatcherTimer();
+            _timer.Interval = TimeSpan.FromMilliseconds(10);
+            _timer.Tick += Timer_Tick;
         }
-      
-        private void AddBall(object obj)
+
+        public void Start()
         {
-            if (_amountOfBalls.All(char.IsDigit))
+            IsStartEnable = false;
+            IsStopEnable = true;
+            IsTextFieldEnable = false;
+            _simulationModel.GenerateBalls(int.Parse(AmountOfBalls));
+            _timer.Start();
+        }
+        public void Stop()
+        {
+            IsStartEnable = true;
+            IsStopEnable = false;
+            IsTextFieldEnable = true;
+            _timer.Stop();
+            _simulationModel.ClearAllBalls();
+            OnPropertyChanged("Balls");
+        }
+        private void Timer_Tick(object sender, EventArgs e)
+        {
+            _simulationModel.UpdateBalls();
+            OnPropertyChanged("Balls");
+        }
+
+        public string TextBoxColor
+        {
+            get => _textBoxColor;
+            set
             {
-                int amount = int.Parse(_amountOfBalls.ToString());
-                _ballCounterModel.AddBall(amount);
-                _simulationUI.InitializeSimulation(amount, 100, 100);
+                _textBoxColor = value;
+                OnPropertyChanged(nameof(TextBoxColor));
             }
-            
-            
-           
-            Console.Clear();
-            foreach (var ball in _ballRepository.GetBalls())
+        }
+
+        //public IBall[]? Balls
+        //{
+        //    get => _simulationModel.GetBalls().ToArray();
+        //}
+        public string AmountOfBalls
+        {
+            get => _amountOfBalls;
+            set
             {
-                Console.WriteLine(ball.ToString());
+                _amountOfBalls = value;
+                if (int.TryParse(value, out int number) && number > 0 && number < 100)
+                {
+                    IsStartEnable = true;
+                    TextBoxColor = "Green";
+                }
+                else
+                {
+                    IsStartEnable = false;
+                    TextBoxColor = "Red";
+                }
+                OnPropertyChanged();
             }
-            OnPropertyChanged(nameof(BallCounter));
         }
 
-        private void DeleteBall(object obj)
+        public bool IsStartEnable
         {
-            _ballCounterModel.DeleteBall();
-            OnPropertyChanged(nameof(BallCounter));
+            get => _isStartEnable;
+            set
+            {
+                _isStartEnable = value;
+                OnPropertyChanged();
+            }
         }
 
-        public ICommand AddBallCommand { get; set; }
-        public ICommand DeleteBallCommand { get; set; }
-        public ICommand ExitCommand { get; private set; }
-
-        public int BallCounter
+        public bool IsStopEnable
         {
-            get { return _ballCounterModel.BallCount; }
-            // OnPropertyChanged wywołuje się teraz w AddBall i DeleteBall
+            get => _isStopEnable;
+            set
+            {
+                _isStopEnable = value;
+                OnPropertyChanged();
+            }
         }
 
-        //this event is called when any property changed
-        public event PropertyChangedEventHandler PropertyChanged;
-
-        //this method handles event
-        private void OnPropertyChanged([CallerMemberName]string propertyName = null)
+        public bool IsTextFieldEnable
         {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+            get => _isTextFieldEnable;
+            set
+            {
+                _isTextFieldEnable = value;
+                OnPropertyChanged();
+            }
         }
     }
+
+    
 }
