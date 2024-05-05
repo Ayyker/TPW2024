@@ -19,7 +19,8 @@ namespace data_layer
             }
             else
             {
-                throw new ArgumentNullException("ball", "Ball cannot be null");
+                //throw new ArgumentNullException("ball", "Ball cannot be null");
+                return;
             }
         }
 

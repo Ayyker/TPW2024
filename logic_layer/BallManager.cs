@@ -29,10 +29,10 @@ namespace logic_layer
                 _ballRepository.AddBall(
                     new Ball(
                         i,
-                        random.NextDouble() * _width,
-                        random.NextDouble() * _height,
-                        random.NextDouble() * 2 - 1,
-                        random.NextDouble() * 2 - 1,
+                        random.NextDouble() * (_width - radius),
+                        random.NextDouble() * (_height - radius),
+                        random.NextDouble() * 2,
+                        random.NextDouble() * 2,
                         radius
                         )
                     );

@@ -23,11 +23,11 @@ namespace presentation_layer.ViewModels
        public event PropertyChangedEventHandler PropertyChanged;
         protected virtual void OnPropertyChanged([CallerMemberName] string? propertyName = null)
         {
-            PropertyChanged.Invoke(this, new PropertyChangedEventArgs(propertyName));
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
 
         private SimulationModel _simulationModel;
-        private String _textBoxColor;
+
         private String _amountOfBalls;
         public ICommand StartCommand { get; }
         public ICommand StopCommand { get; }
@@ -38,11 +38,10 @@ namespace presentation_layer.ViewModels
         private DispatcherTimer _timer;
         // hard value of size
         private int _width = 1000;
-        private int _height = 800;
+        private int _height = 500;
 
         public MainViewModel()
         {
-            TextBoxColor = "Green";
             StartCommand = new RelayCommand(Start, ()=>_isStartEnable);
             StopCommand = new RelayCommand(Stop, () => IsStopEnable);
             _simulationModel = new SimulationModel(_width, _height);
@@ -79,21 +78,20 @@ namespace presentation_layer.ViewModels
             _simulationModel.UpdateBalls();
             OnPropertyChanged("Balls");
         }
-
-        public string TextBoxColor
+        public int Width
         {
-            get => _textBoxColor;
-            set
-            {
-                _textBoxColor = value;
-                OnPropertyChanged(nameof(TextBoxColor));
-            }
+            get => _width;
+        }
+        public int Height
+        {
+            get => _height;
         }
 
-        //public IBall[]? Balls
-        //{
-        //    get => _simulationModel.GetBalls().ToArray();
-        //}
+
+        public IBall[]? Balls
+        {
+            get => _simulationModel.GetBalls().ToArray();
+        }
         public string AmountOfBalls
         {
             get => _amountOfBalls;
@@ -103,12 +101,10 @@ namespace presentation_layer.ViewModels
                 if (int.TryParse(value, out int number) && number > 0 && number < 100)
                 {
                     IsStartEnable = true;
-                    TextBoxColor = "Green";
                 }
                 else
                 {
                     IsStartEnable = false;
-                    TextBoxColor = "Red";
                 }
                 OnPropertyChanged();
             }

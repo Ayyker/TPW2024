@@ -5,49 +5,50 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:presentation_layer"
         mc:Ignorable="d"
-        Title="Bilard" Height="450" Width="800">
+        Title="Kule, kule, kule" Height="600" Width="1500"
+        Background="DimGray">
     <Grid>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition />
-            <ColumnDefinition />
-            <ColumnDefinition />
-            <ColumnDefinition />
-            <ColumnDefinition />
-            <ColumnDefinition />
-            <ColumnDefinition />
-            <ColumnDefinition />
-            <ColumnDefinition />
-            <ColumnDefinition />
-            <ColumnDefinition />
-            <ColumnDefinition />
+            <ColumnDefinition Width="180"/>
+            <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
-        <Grid.RowDefinitions>
-            <RowDefinition />
-            <RowDefinition />
-            <RowDefinition />
-            <RowDefinition />
-            <RowDefinition />
-            <RowDefinition />
-            <RowDefinition />
-            <RowDefinition />
-            <RowDefinition />
-            <RowDefinition />
-        </Grid.RowDefinitions>
 
-        <Button Grid.Row="5" Grid.Column="1" Grid.ColumnSpan="2" Content="add pool ball" Command="{Binding AddBallCommand}" Margin="0,43,0,43" Grid.RowSpan="3" />
-        <Button Grid.Row="8" Grid.Column="1" Grid.ColumnSpan="2" Content="exit" Command="{Binding ExitCommand}"/>
-        <TextBlock Grid.Row="2" Grid.Column="1"   TextWrapping="WrapWithOverflow" VerticalAlignment="Center" TextAlignment="Center" >Count of balls:</TextBlock>
-        <TextBlock Grid.Row="2" Grid.Column="2" VerticalAlignment="Center" TextAlignment="Center" Text="{Binding BallCounter}"/>
+        <StackPanel Grid.Column="0" Margin="5" Orientation="Vertical" HorizontalAlignment="Center" VerticalAlignment="Top">
+            <Label Foreground="WhiteSmoke" >Wprowadź liczbę kul:</Label>
+            <TextBox Text="{Binding AmountOfBalls, UpdateSourceTrigger=PropertyChanged}" Width="50" Height="30" Margin="5" TextAlignment="Center" IsEnabled="{Binding IsTextFieldEnable}"/>
+            <Button Content="Wygeneruj kule" Width="100" Height="40" Margin="5" Command="{Binding StartCommand}" IsEnabled="{Binding IsStartEnable}"/>
+            <Button Content="Usuń kule" Width="100" Height="40" Margin="5" Command="{Binding StopCommand}" IsEnabled="{Binding IsStopEnable}"/>
+            
+        </StackPanel>
 
-
-        <Border Grid.Row="3" Grid.RowSpan="6" Grid.Column="4" Grid.ColumnSpan="7" x:Name="CanvasBorder" BorderBrush="SaddleBrown">
-            <Canvas  Background="LightGreen">
-
+        <Border Grid.Column="1" BorderBrush="SaddleBrown" BorderThickness="10" HorizontalAlignment="Center" VerticalAlignment="Center">
+            <Canvas Height="{Binding Height}" Width="{Binding Width}" Background="Green" HorizontalAlignment="Center">
+                <ItemsControl ItemsSource="{Binding Balls}">
+                    <ItemsControl.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <Canvas/>
+                        </ItemsPanelTemplate>
+                    </ItemsControl.ItemsPanel>
+                    <ItemsControl.ItemContainerStyle>
+                        <Style>
+                            <Setter Property="Canvas.Left" Value="{Binding X_position}" />
+                            <Setter Property="Canvas.Top" Value="{Binding Y_position}" />
+                        </Style>
+                    </ItemsControl.ItemContainerStyle>
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate>
+                            <Ellipse Width="{Binding Radius}" Height="{Binding Radius}">
+                                <Ellipse.Fill>
+                                    <RadialGradientBrush Center="0.5,0.5" RadiusX="0.5">
+                                        <GradientStop Color="DeepSkyBlue" Offset="0" />
+                                        <GradientStop Color="Black" Offset="1" />
+                                    </RadialGradientBrush>
+                                </Ellipse.Fill>
+                            </Ellipse>
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                </ItemsControl>
             </Canvas>
-
         </Border>
-        <Label Content="insert amount of balls" Grid.Column="1" Grid.ColumnSpan="2" Margin="0,17,0,0" Grid.Row="4" HorizontalAlignment="Center" VerticalAlignment="Top" Width="133" />
-        <TextBox Grid.Column="1" Grid.ColumnSpan="2" HorizontalAlignment="Center" Margin="0,5,0,0" Grid.Row="5" TextWrapping="Wrap" VerticalAlignment="Center" Width="133" TextChanged="TextBox_TextChanged" TextAlignment="Center" Name="AmountOfBalls" Text="{Binding AmountOfBalls}"/>
-
     </Grid>
 </Window>

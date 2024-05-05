@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace data_layer
 {
-    internal interface IBall
+    public interface IBall
     {
         public int ID { get; set; }
         public double X_position { get; set; }
