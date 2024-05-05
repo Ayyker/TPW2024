@@ -9,8 +9,6 @@ namespace data_layer
     public class BallRepository : IBallRepository
     {
         private List<Ball> balls = new List<Ball>();
-        
-
  
         public void AddBall(Ball ball)
         {

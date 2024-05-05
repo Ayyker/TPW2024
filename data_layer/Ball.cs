@@ -6,8 +6,13 @@ using System.Threading.Tasks;
 
 namespace data_layer
 {
-    public class Ball
+    public class Ball: i_Ball
     {
+        private int _ID;
+        private double _X_position;
+        private double _Y_position;
+        private double _
+
        
         public double X { get; set; }
         public double Y { get; set; }
