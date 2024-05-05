@@ -7,30 +7,31 @@ using System.Threading.Tasks;
 namespace data_layer
 {
     public class BallRepository : IBallRepository
-    {
-        private List<Ball> balls = new List<Ball>();
+
+    {   //target-typed expression
+        private List<Ball> _Balls = new(); 
  
         public void AddBall(Ball ball)
         {
-            balls.Add(ball);
+            if (ball != null)
+            {
+                _Balls.Add(ball);
+            }
+            else
+            {
+                throw new ArgumentNullException("ball", "Ball cannot be null");
+            }
         }
 
         public IReadOnlyList<Ball> GetBalls()
         {
-            return balls.ToArray();
+            return _Balls.ToArray();
         }
 
-        public void RemoveBall(Ball ball)
+        public void ClearAllBalls()
         {
-            balls.Remove(ball);
+            _Balls.Clear();
         }
 
-        public void UpdateBalls()
-        {
-            foreach (Ball b in balls)
-            {
-                b.UpdatePosition();
-            }
-        }
     }
 }
