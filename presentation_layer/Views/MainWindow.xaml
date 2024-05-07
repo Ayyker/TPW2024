@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:presentation_layer"
         mc:Ignorable="d"
-        Title="Kule, kule, kule" Height="600" Width="1500"
+        Title="Kule, kule, kule" Height="600" Width="1250"
         Background="DimGray">
     <Grid>
         <Grid.ColumnDefinitions>
@@ -15,14 +15,14 @@
 
         <StackPanel Grid.Column="0" Margin="5" Orientation="Vertical" HorizontalAlignment="Center" VerticalAlignment="Top">
             <Label Foreground="WhiteSmoke" >Wprowadź liczbę kul:</Label>
-            <TextBox Text="{Binding AmountOfBalls, UpdateSourceTrigger=PropertyChanged}" Width="50" Height="30" Margin="5" TextAlignment="Center" IsEnabled="{Binding IsTextFieldEnable}"/>
-            <Button Content="Wygeneruj kule" Width="100" Height="40" Margin="5" Command="{Binding StartCommand}" IsEnabled="{Binding IsStartEnable}"/>
-            <Button Content="Usuń kule" Width="100" Height="40" Margin="5" Command="{Binding StopCommand}" IsEnabled="{Binding IsStopEnable}"/>
-            
+            <TextBox Text="{Binding Amount_Of_Balls, UpdateSourceTrigger=PropertyChanged}" Width="50" Height="30" Margin="5" TextAlignment="Center" IsEnabled="{Binding Is_Text_Field_Enable}"/>
+            <Button Content="Wygeneruj kule" Width="100" Height="40" Margin="5" Command="{Binding Start_Simulation_Command}" IsEnabled="{Binding Is_Start_Button_Enable}"/>
+            <Button Content="Usuń kule" Width="100" Height="40" Margin="5" Command="{Binding Stop_Simulation_Command}" IsEnabled="{Binding Is_Stop_Button_Enable}"/>
+
         </StackPanel>
 
         <Border Grid.Column="1" BorderBrush="SaddleBrown" BorderThickness="10" HorizontalAlignment="Center" VerticalAlignment="Center">
-            <Canvas Height="{Binding Height}" Width="{Binding Width}" Background="Green" HorizontalAlignment="Center">
+            <Canvas Height="{Binding Billard_Table_Height}" Width="{Binding Billard_Table_Width}" Background="Green" HorizontalAlignment="Center">
                 <ItemsControl ItemsSource="{Binding Balls}">
                     <ItemsControl.ItemsPanel>
                         <ItemsPanelTemplate>

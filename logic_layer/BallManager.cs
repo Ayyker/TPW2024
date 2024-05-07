@@ -1,24 +1,30 @@
 ﻿using data_layer;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace logic_layer
 {
     public class BallManager : IBallManager
     {
-        private IBallRepository _ballRepository;
-        private int _width;
-        private int _height;
+        private int _Width;
+        private int _Weight;
+        private IBallRepository _Ball_Repository;
 
-        public BallManager(IBallRepository ballRepository, int width, int height)
+        public BallManager(int width, int height, IBallRepository ballRepository)
         {
-            _ballRepository = ballRepository;
-            _width = width;
-            _height = height;
+
+            _Width = width;
+            _Weight = height;
+            _Ball_Repository = ballRepository;
         }
+        public int Width
+        {
+            get => _Width;
+        }
+
+        public int Height
+        {
+            get => _Weight;
+        }
+
         public void GenerateBalls(int amount)
         {
             Random random = new Random();
@@ -26,51 +32,49 @@ namespace logic_layer
             double radius = 45.0;
             for (int i = 0; i < amount; i++)
             {
-                _ballRepository.AddBall(
+                _Ball_Repository.AddBall(
                     new Ball(
-                        i,
-                        random.NextDouble() * (_width - radius),
-                        random.NextDouble() * (_height - radius),
-                        random.NextDouble() * 2,
-                        random.NextDouble() * 2,
-                        radius
+                        radius,
+                        random.NextDouble() * (_Width - radius),
+                        random.NextDouble() * (_Weight - radius),
+                        random.NextDouble() * 4,
+                        random.NextDouble() * 4,
+                        i
                         )
                     );
             }
         }
         public void UpdateBalls()
         {
-            foreach(Ball ball in GetBalls())
+            foreach (Ball ball in _Ball_Repository.GetAllBalls())
             {
-                double new_x_position = ball.X_position + ball.Velocity_X;
-                double new_y_position = ball.Y_position + ball.Velocity_Y;
+                double new_x_position = ball.X_position + ball.X_velocity;
+                double new_y_position = ball.Y_position + ball.Y_velocity;
 
-                //x position logic
-                if ( new_x_position <= 0)
+                if (new_x_position <= 0)
                 {
                     ball.X_position = 0;
-                    ball.Velocity_X *= -1;
+                    ball.X_velocity *= -0.9;
                 }
-                else if ( new_x_position + ball.Radius >= _width)
+                else if (new_x_position + ball.Radius >= _Width)
                 {
-                    ball.X_position = _width - ball.Radius;
-                    ball.Velocity_X *= -1;
+                    ball.X_position = _Width - ball.Radius;
+                    ball.X_velocity *= -0.9;
                 }
                 else
                 {
                     ball.X_position = new_x_position;
                 }
 
-                //y position logic
-                if ( new_y_position <= 0)
+                if (new_y_position <= 0)
                 {
                     ball.Y_position = 0;
-                    ball.Velocity_Y *= -1;
+                    ball.Y_velocity *= -0.9;
                 }
-                else if(new_y_position + ball.Radius >= _height)
+                else if (new_y_position + ball.Radius >= _Weight)
                 {
-                    ball.Y_position= _height - ball.Radius;
-                    ball.Velocity_Y *= -1;
+                    ball.Y_position = _Weight - ball.Radius;
+                    ball.Y_velocity *= -0.9;
                 }
                 else
                 {
@@ -79,36 +83,15 @@ namespace logic_layer
             }
         }
 
-
-
-
-
-
-
-
-
-        public int Width
-        {
-            get => _width;
-        }
-
-        public int Height
-        {
-            get => _height;
-        }
-
         public void ClearAllBalls()
         {
-            _ballRepository.ClearAllBalls();
+            _Ball_Repository.ClearAllBalls();
         }
-
- 
-
-        public IReadOnlyList<Ball> GetBalls()
+        public IReadOnlyList<Ball> GetAllBalls()
         {
-            return _ballRepository.GetBalls();
+            return _Ball_Repository.GetAllBalls();
         }
 
-  
+
     }
 }

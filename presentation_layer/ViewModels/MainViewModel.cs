@@ -1,145 +1,124 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
 using System.Runtime.CompilerServices;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows;
 using System.Windows.Input;
-using static presentation_layer.ViewModels.RelayCommand;
-using System.Diagnostics;
-
 using presentation_layer.Models;
 using data_layer;
-using logic_layer;
-using System.Xml.Linq;
 using System.Windows.Threading;
 
 namespace presentation_layer.ViewModels
 {
     public class MainViewModel : INotifyPropertyChanged
     {
-       public event PropertyChangedEventHandler PropertyChanged;
-        protected virtual void OnPropertyChanged([CallerMemberName] string? propertyName = null)
+        public event PropertyChangedEventHandler PropertyChanged;
+        private void NotifyPropertyChanged([CallerMemberName] string propertyName = null)
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
 
-        private SimulationModel _simulationModel;
+        private SimulationModel _Simulation_Model;
+        private String _Amount_Of_Balls;
+        private DispatcherTimer _Update_Timer;
+        private bool _Is_Start_Button_Active;
+        private bool _Is_Stop_Button_Active;
+        private bool _Is_Text_Field_Active;
+        public ICommand Start_Simulation_Command { get; }
+        public ICommand Stop_Simulation_Command { get; }
 
-        private String _amountOfBalls;
-        public ICommand StartCommand { get; }
-        public ICommand StopCommand { get; }
-        private bool _isStartEnable;
-        private bool _isStopEnable;
-        private bool _isTextFieldEnable;
-
-        private DispatcherTimer _timer;
-        // hard value of size
-        private int _width = 1000;
-        private int _height = 500;
+        // hard value of Billard Table size
+        private int _Billard_Table_Width = 1000;
+        private int _Billard_Table_Height = 500;
+        public int Billard_Table_Width => _Billard_Table_Width;
+        public int Billard_Table_Height => _Billard_Table_Height;
 
         public MainViewModel()
         {
-            StartCommand = new RelayCommand(Start, ()=>_isStartEnable);
-            StopCommand = new RelayCommand(Stop, () => IsStopEnable);
-            _simulationModel = new SimulationModel(_width, _height);
-            _amountOfBalls = "47";
+            Start_Simulation_Command = new RelayCommand(Start_Simulation, () => _Is_Start_Button_Active);
+            Stop_Simulation_Command = new RelayCommand(Stop_Simulation, () => Is_Stop_Button_Enable);
+            _Simulation_Model = new SimulationModel(_Billard_Table_Width, _Billard_Table_Height);
+            _Amount_Of_Balls = "47";
 
-            IsStartEnable = true;
-            IsStopEnable = false;
-            IsTextFieldEnable = true;
+            Is_Start_Button_Enable = true;
+            Is_Stop_Button_Enable = false;
+            Is_Text_Field_Enable = true;
 
-            _timer = new DispatcherTimer();
-            _timer.Interval = TimeSpan.FromMilliseconds(10);
-            _timer.Tick += Timer_Tick;
-        }
-
-        public void Start()
-        {
-            IsStartEnable = false;
-            IsStopEnable = true;
-            IsTextFieldEnable = false;
-            _simulationModel.GenerateBalls(int.Parse(AmountOfBalls));
-            _timer.Start();
-        }
-        public void Stop()
-        {
-            IsStartEnable = true;
-            IsStopEnable = false;
-            IsTextFieldEnable = true;
-            _timer.Stop();
-            _simulationModel.ClearAllBalls();
-            OnPropertyChanged("Balls");
-        }
-        private void Timer_Tick(object sender, EventArgs e)
-        {
-            _simulationModel.UpdateBalls();
-            OnPropertyChanged("Balls");
-        }
-        public int Width
-        {
-            get => _width;
-        }
-        public int Height
-        {
-            get => _height;
+            _Update_Timer = new DispatcherTimer();
+            _Update_Timer.Interval = TimeSpan.FromMilliseconds(1);
+            _Update_Timer.Tick += Update_Simulation;
         }
 
-
-        public IBall[]? Balls
+        public string Amount_Of_Balls
         {
-            get => _simulationModel.GetBalls().ToArray();
-        }
-        public string AmountOfBalls
-        {
-            get => _amountOfBalls;
+            get => _Amount_Of_Balls;
             set
             {
-                _amountOfBalls = value;
-                if (int.TryParse(value, out int number) && number > 0 && number < 100)
-                {
-                    IsStartEnable = true;
-                }
-                else
-                {
-                    IsStartEnable = false;
-                }
-                OnPropertyChanged();
+                _Amount_Of_Balls = value;
+                Is_Start_Button_Enable = int.TryParse(value, out int number) && number > 0;
+                NotifyPropertyChanged();
+                NotifyPropertyChanged("CanStart");
             }
         }
 
-        public bool IsStartEnable
+        public void Start_Simulation()
         {
-            get => _isStartEnable;
+            Is_Start_Button_Enable = false;
+            Is_Stop_Button_Enable = true;
+            Is_Text_Field_Enable = false;
+            _Simulation_Model.GenerateBalls(int.Parse(Amount_Of_Balls));
+            _Update_Timer.Start();
+            NotifyPropertyChanged("CanStart");
+            NotifyPropertyChanged("CanStop");
+            NotifyPropertyChanged("CanEdit");
+        }
+        public void Stop_Simulation()
+        {
+            Is_Start_Button_Enable = true;
+            Is_Stop_Button_Enable = false;
+            Is_Text_Field_Enable = true;
+            _Update_Timer.Stop();
+            _Simulation_Model.ClearAllBalls();
+            NotifyPropertyChanged("CanStart");
+            NotifyPropertyChanged("CanStop");
+            NotifyPropertyChanged("CanEdit");
+            NotifyPropertyChanged("Balls");
+        }
+        private void Update_Simulation(object sender, EventArgs e)
+        {
+            _Simulation_Model.UpdateBalls();
+            NotifyPropertyChanged("Balls");
+        }
+        public IBall[]? Balls => _Simulation_Model.GetBalls().ToArray();
+        public bool Is_Start_Button_Enable
+        {
+            get => _Is_Start_Button_Active;
             set
             {
-                _isStartEnable = value;
-                OnPropertyChanged();
+                _Is_Start_Button_Active = value;
+                NotifyPropertyChanged();
             }
         }
 
-        public bool IsStopEnable
+        public bool Is_Stop_Button_Enable
         {
-            get => _isStopEnable;
+            get => _Is_Stop_Button_Active;
             set
             {
-                _isStopEnable = value;
-                OnPropertyChanged();
+                _Is_Stop_Button_Active = value;
+                NotifyPropertyChanged();
             }
         }
 
-        public bool IsTextFieldEnable
+        public bool Is_Text_Field_Enable
         {
-            get => _isTextFieldEnable;
+            get => _Is_Text_Field_Active;
             set
             {
-                _isTextFieldEnable = value;
-                OnPropertyChanged();
+                _Is_Text_Field_Active = value;
+                NotifyPropertyChanged();
             }
         }
     }
 
-    
+
 }

@@ -5,29 +5,22 @@ namespace presentation_layer.ViewModels
 {
     public class RelayCommand : ICommand
     {
-        private Action _execute;
-        private Func<bool> _canExecute;
+        private readonly Action _Execute_Action;
+        private readonly Func<bool> _Can_Execute_Evaluator;
+        public RelayCommand(Action execute, Func<bool> canExecute = null)
+        {
+            _Execute_Action = execute ?? throw new ArgumentNullException(nameof(execute));
+            _Can_Execute_Evaluator = canExecute;
+        }
 
         public event EventHandler CanExecuteChanged
         {
-            add { CommandManager.RequerySuggested += value; }
-            remove { CommandManager.RequerySuggested -= value; }
+            add => CommandManager.RequerySuggested += value;
+            remove => CommandManager.RequerySuggested -= value;
         }
 
-        public RelayCommand(Action execute, Func<bool> canExecute = null)
-        {
-            _execute = execute;
-            _canExecute = canExecute;
-        }
+        public bool CanExecute(object parameter) => _Can_Execute_Evaluator?.Invoke() ?? true;
 
-        public bool CanExecute(object parameter)
-        {
-            return _canExecute == null || _canExecute();
-        }
-
-        public void Execute(object parameter)
-        {
-            _execute();
-        }
+        public void Execute(object parameter) => _Execute_Action.Invoke();
     }
 }

@@ -1,16 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
+﻿
 namespace data_layer
 {
     public class BallRepository : IBallRepository
 
-    {   //target-typed expression
-        private List<Ball> _Balls = new(); 
- 
+    {
+        private List<Ball> _Balls = new List<Ball>();
+
         public void AddBall(Ball ball)
         {
             if (ball != null)
@@ -19,14 +14,12 @@ namespace data_layer
             }
             else
             {
-                //throw new ArgumentNullException("ball", "Ball cannot be null");
-                return;
+                throw new ArgumentNullException("ball", "Ball cannot be null");
             }
         }
-
-        public IReadOnlyList<Ball> GetBalls()
+        public List<Ball> GetAllBalls()
         {
-            return _Balls.ToArray();
+            return _Balls;
         }
 
         public void ClearAllBalls()

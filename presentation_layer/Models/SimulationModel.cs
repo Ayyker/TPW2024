@@ -1,40 +1,37 @@
 ﻿using data_layer;
 using logic_layer;
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace presentation_layer.Models
 {
     public class SimulationModel
     {
-        private IBallRepository _ballRepository;
-        private IBallManager _ballManager;
+        private IBallRepository _Ball_Repository;
+        private IBallManager _Ball_Manager;
 
         public SimulationModel(int width, int height)
         {
-            _ballRepository = new BallRepository();
-            _ballManager = new BallManager(_ballRepository, width, height); 
+            _Ball_Repository = new BallRepository();
+            _Ball_Manager = new BallManager(width, height, _Ball_Repository);
         }
 
         public void GenerateBalls(int amount)
         {
-            _ballManager.GenerateBalls(amount);
+            _Ball_Manager.GenerateBalls(amount);
         }
 
-        public void UpdateBalls() 
+        public void UpdateBalls()
         {
-            _ballManager.UpdateBalls();
-        }
-        public IReadOnlyList<Ball> GetBalls()
-        {
-            return _ballManager.GetBalls();
+            _Ball_Manager.UpdateBalls();
         }
         public void ClearAllBalls()
         {
-            _ballManager.ClearAllBalls();
+            _Ball_Manager.ClearAllBalls();
         }
+        public IReadOnlyList<Ball> GetBalls()
+        {
+            return _Ball_Manager.GetAllBalls();
+        }
+
     }
 }

@@ -1,34 +1,28 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
+﻿
 namespace data_layer
 {
-    public class Ball: IBall
+    public class Ball : IBall
     {
         private int _ID;
         private double _X_position;
         private double _Y_position;
-        private double _Velocity_X;
-        private double _Velocity_Y;
+        private double _X_velocity;
+        private double _Y_velocity;
         private double _Radius;
 
-        public Ball(int id, double x, double y, double velocityX, double velocityY, double radius)
+        public Ball(double radius, double x, double y, double x_velocity, double y_velocity, int id)
         {
-            ID = id;
+            Radius = radius;
             X_position = x;
             Y_position = y;
-            Velocity_X = velocityX;
-            Velocity_Y = velocityY;
-            Radius = radius;
+            X_velocity = x_velocity;
+            Y_velocity = y_velocity;
+            ID = id;
         }
-
-        public int ID
+        public double Radius
         {
-            get => _ID; 
-            set => _ID = value;
+            get => _Radius;
+            set => _Radius = value;
         }
 
         public double X_position
@@ -41,30 +35,25 @@ namespace data_layer
             get => _Y_position;
             set => _Y_position = value;
         }
-
-        public double Velocity_X
+        public double X_velocity
         {
-            get => _Velocity_X;
-            set => _Velocity_X = value;
+            get => _X_velocity;
+            set => _X_velocity = value;
         }
-        public double Velocity_Y
+        public double Y_velocity
         {
-            get => _Velocity_Y;
-            set => _Velocity_Y = value;
+            get => _Y_velocity;
+            set => _Y_velocity = value;
         }
-        public double Radius
+        public int ID
         {
-            get => _Radius;
-            set => _Radius = value;
+            get => _ID;
+            set => _ID = value;
         }
-
-
-
-
 
         public override string ToString()
         {
-            return $"Ball at ({X_position}, {Y_position}) with velocity ({Velocity_X}, {Velocity_Y}) and radius {Radius}.";
+            return $"Ball at ({X_position}, {Y_position}) with velocity ({X_velocity}, {Y_velocity}) and radius {Radius}.";
         }
     }
 }
