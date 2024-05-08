@@ -11,8 +11,8 @@ namespace tests {
         [SetUp]
         public void Setup() {
             _repo = new BallRepository();
-            _ball = new Ball(45, 20, 20, 20, 20, 1);
-            _ball2 = new Ball(50, 20, 20, 20, 20, 2);
+            _ball = new Ball(45, 20, 20, 20, 20, 1, "black");
+            _ball2 = new Ball(50, 20, 20, 20, 20, 2, "black");
             _ball3 = null;
         }
 
