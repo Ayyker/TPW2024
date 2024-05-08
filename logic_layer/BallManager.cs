@@ -60,7 +60,7 @@ namespace logic_layer
 
         public void GenerateBalls(int amount)
         {
-            // hard value of ball radius
+            // hard coded value of ball radius
             double radius = 45.0;
             ballColors.Shuffle();
             int colorIndex = 0;

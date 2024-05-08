@@ -38,7 +38,7 @@ namespace tests {
         [Test]
         public void ToStringTest() {
             Ball _ball2 = new Ball(84, 2, 1, 3, 7, 1, "yellow");
-            Assert.That(_ball2.ToString(), Is.EqualTo("Ball at (2, 1) with velocity (3, 7) and radius 84."));
+            Assert.That(_ball2.ToString(), Is.EqualTo("Ball at (2, 1) with velocity (3, 7), radius 84 and yellow color."));
         }
     }
 }

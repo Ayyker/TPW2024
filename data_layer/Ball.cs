@@ -69,7 +69,7 @@ namespace data_layer
 
         public override string ToString()
         {
-            return $"Ball at ({X_position}, {Y_position}) with velocity ({X_velocity}, {Y_velocity}) and radius {Radius}.";
+            return $"Ball at ({X_position}, {Y_position}) with velocity ({X_velocity}, {Y_velocity}), radius {Radius} and {Color} color.";
         }
     }
 }
