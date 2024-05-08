@@ -37,14 +37,17 @@
                     </ItemsControl.ItemContainerStyle>
                     <ItemsControl.ItemTemplate>
                         <DataTemplate>
-                            <Ellipse Width="{Binding Radius}" Height="{Binding Radius}">
-                                <Ellipse.Fill>
-                                    <RadialGradientBrush Center="0.5,0.5" RadiusX="0.5">
-                                        <GradientStop Color="DeepSkyBlue" Offset="0" />
-                                        <GradientStop Color="Black" Offset="1" />
-                                    </RadialGradientBrush>
-                                </Ellipse.Fill>
-                            </Ellipse>
+                            <Grid Width="{Binding Radius}" Height="{Binding Radius}">
+                                <Ellipse>
+                                    <Ellipse.Fill>
+                                        <RadialGradientBrush Center="0.5,0.5" RadiusX="0.5">
+                                            <GradientStop Color="{Binding Color}" Offset="0" />
+                                            <GradientStop Color="Black" Offset="2" />
+                                        </RadialGradientBrush>
+                                    </Ellipse.Fill>
+                                </Ellipse>
+                                <TextBlock Text="{Binding Ball_Number}" HorizontalAlignment="Center" VerticalAlignment="Center" Foreground="White" FontWeight="Bold"/>
+                            </Grid>
                         </DataTemplate>
                     </ItemsControl.ItemTemplate>
                 </ItemsControl>

@@ -10,6 +10,5 @@ namespace data_layer
         public double Y_velocity { get; set; }
         public int ID { get; set; }
 
-
     }
 }

@@ -1,4 +1,6 @@
 ﻿
+using System.Drawing;
+
 namespace data_layer
 {
     public class Ball : IBall
@@ -9,8 +11,10 @@ namespace data_layer
         private double _X_velocity;
         private double _Y_velocity;
         private double _Radius;
+        private string _Color;
+        private int _Ball_Number;
 
-        public Ball(double radius, double x, double y, double x_velocity, double y_velocity, int id)
+        public Ball(double radius, double x, double y, double x_velocity, double y_velocity, int id, string color)
         {
             Radius = radius;
             X_position = x;
@@ -18,6 +22,8 @@ namespace data_layer
             X_velocity = x_velocity;
             Y_velocity = y_velocity;
             ID = id;
+            Color = color;
+            Ball_Number = (id % 15) + 1;
         }
         public double Radius
         {
@@ -49,6 +55,16 @@ namespace data_layer
         {
             get => _ID;
             set => _ID = value;
+        }
+        public string Color 
+        {
+            get => _Color;
+            set => _Color = value;
+        }
+        public int Ball_Number 
+        {
+            get => _Ball_Number;
+            set => _Ball_Number = value;
         }
 
         public override string ToString()
