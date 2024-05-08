@@ -23,7 +23,7 @@ namespace data_layer
             Y_velocity = y_velocity;
             ID = id;
             Color = color;
-            Ball_Number = (id % 15) + 1;
+            Ball_Number = (id % 16) + 1;
         }
         public double Radius
         {

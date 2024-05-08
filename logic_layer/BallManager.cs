@@ -24,21 +24,22 @@ namespace logic_layer
         private Random random = new Random();
         private List<string> ballColors = new List<string>
        {
-            "#FFFFFF",
-            "#FFFF00",
-            "#0000FF",
-            "#FF0000",
-            "#800080",
-            "#000000",
-            "#FFA500",
-            "#008000",
-            "#A52A2A",
-            "#FFFF80",
-            "#8080FF",
-            "#FF8080",
-            "#E080E0",
-            "#FFD480",
-            "#80C080"
+            "#ffd400",
+            "#003db1",
+            "#e71c01",
+            "#4e029d",
+            "#fa4c01",
+            "#0f5c01",
+            "#6c061a",
+            "#010001",
+            "#ffd400",
+            "#003db1",
+            "#e71c01",
+            "#4e029d",
+            "#fa4c01",
+            "#0f5c01",
+            "#6c061a",
+            "#fefedf"
         };
 
         public BallManager(int width, int height, IBallRepository ballRepository)
@@ -62,7 +63,7 @@ namespace logic_layer
         {
             // hard coded value of ball radius
             double radius = 45.0;
-            ballColors.Shuffle();
+            //ballColors.Shuffle();
             int colorIndex = 0;
             for (int i = 0; i < amount; i++)
             {
@@ -78,7 +79,7 @@ namespace logic_layer
                         )
                     );
                 colorIndex++;
-                if ( colorIndex > 14) {
+                if ( colorIndex > 15) {
                     colorIndex = 0;
                 }
             }
