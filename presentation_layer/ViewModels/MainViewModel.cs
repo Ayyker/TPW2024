@@ -26,7 +26,7 @@ namespace presentation_layer.ViewModels
         public ICommand Start_Simulation_Command { get; }
         public ICommand Stop_Simulation_Command { get; }
 
-        // hard value of Billard Table size
+        // hard coded value of Billard Table size
         private int _Billard_Table_Width = 1000;
         private int _Billard_Table_Height = 500;
         public int Billard_Table_Width => _Billard_Table_Width;

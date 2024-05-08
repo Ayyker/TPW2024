@@ -5,14 +5,14 @@ namespace logic_layer
     public class BallManager : IBallManager
     {
         private int _Width;
-        private int _Weight;
+        private int _Height;
         private IBallRepository _Ball_Repository;
 
         public BallManager(int width, int height, IBallRepository ballRepository)
         {
 
             _Width = width;
-            _Weight = height;
+            _Height = height;
             _Ball_Repository = ballRepository;
         }
         public int Width
@@ -22,7 +22,7 @@ namespace logic_layer
 
         public int Height
         {
-            get => _Weight;
+            get => _Height;
         }
 
         public void GenerateBalls(int amount)
@@ -36,7 +36,7 @@ namespace logic_layer
                     new Ball(
                         radius,
                         random.NextDouble() * (_Width - radius),
-                        random.NextDouble() * (_Weight - radius),
+                        random.NextDouble() * (_Height - radius),
                         random.NextDouble() * 4,
                         random.NextDouble() * 4,
                         i
@@ -71,9 +71,9 @@ namespace logic_layer
                     ball.Y_position = 0;
                     ball.Y_velocity *= -0.9;
                 }
-                else if (new_y_position + ball.Radius >= _Weight)
+                else if (new_y_position + ball.Radius >= _Height)
                 {
-                    ball.Y_position = _Weight - ball.Radius;
+                    ball.Y_position = _Height - ball.Radius;
                     ball.Y_velocity *= -0.9;
                 }
                 else
