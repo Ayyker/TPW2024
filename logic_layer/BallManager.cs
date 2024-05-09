@@ -94,12 +94,12 @@ namespace logic_layer
                 if (new_x_position <= 0)
                 {
                     ball.X_position = 0;
-                    ball.X_velocity *= -0.9;
+                    ball.X_velocity *= -1.0;
                 }
                 else if (new_x_position + ball.Radius >= _Width)
                 {
                     ball.X_position = _Width - ball.Radius;
-                    ball.X_velocity *= -0.9;
+                    ball.X_velocity *= -1.0;
                 }
                 else
                 {
@@ -109,12 +109,12 @@ namespace logic_layer
                 if (new_y_position <= 0)
                 {
                     ball.Y_position = 0;
-                    ball.Y_velocity *= -0.9;
+                    ball.Y_velocity *= -1.0;
                 }
                 else if (new_y_position + ball.Radius >= _Height)
                 {
                     ball.Y_position = _Height - ball.Radius;
-                    ball.Y_velocity *= -0.9;
+                    ball.Y_velocity *= -1.0;
                 }
                 else
                 {
