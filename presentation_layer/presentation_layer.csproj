@@ -14,7 +14,6 @@
     <Page Include="App.xaml" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\data_layer\data_layer.csproj" />
     <ProjectReference Include="..\logic_layer\logic_layer.csproj" />
   </ItemGroup>
 </Project>
