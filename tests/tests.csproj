@@ -1,8 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>net8.0</TargetFramework>
-    <RootNamespace>TWP_Testy</RootNamespace>
+    <TargetFramework>net8.0-windows</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
 
@@ -19,7 +18,9 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\TPW2024\TPW2024.csproj" />
+    <ProjectReference Include="..\data_layer\data_layer.csproj" />
+    <ProjectReference Include="..\logic_layer\logic_layer.csproj" />
+    <ProjectReference Include="..\presentation_layer\presentation_layer.csproj" />
   </ItemGroup>
 
   <ItemGroup>
