@@ -6,7 +6,7 @@ using System.Runtime.CompilerServices;
 using System.Windows.Threading;
 
 namespace presentation_layer.ViewModels {
-    public class BetterBall : IBetterBall, INotifyPropertyChanged{
+    public class BetterBall : IBetterBall, INotifyPropertyChanged {
 
         private DispatcherTimer _timer;
         private int _Width;
@@ -15,7 +15,7 @@ namespace presentation_layer.ViewModels {
         protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null) {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
-        public Ball Ball { get;  set; }
+        public Ball Ball { get; set; }
         public double X_position {
             get => Ball.X_position;
             set {
@@ -51,7 +51,7 @@ namespace presentation_layer.ViewModels {
             _Width = width;
             _Height = height;
             _timer = new DispatcherTimer();
-            _timer.Interval = TimeSpan.FromMilliseconds(1); 
+            _timer.Interval = TimeSpan.FromMilliseconds(1);
             _timer.Tick += (sender, args) => UpdateBall();
             _timer.Start();
         }

@@ -1,23 +1,8 @@
 ﻿using data_layer;
 
-namespace logic_layer
-{
-    public static class ShuffleExtensions {
-        private static Random random = new Random();
+namespace logic_layer {
 
-        public static void Shuffle<T>(this IList<T> list) {
-            int n = list.Count;
-            while (n > 1) {
-                n--;
-                int k = random.Next(n + 1);
-                T value = list[k];
-                list[k] = list[n];
-                list[n] = value;
-            }
-        }
-    }
-    public class BallManager : IBallManager
-    {
+    public class BallManager : IBallManager {
         private int _Width;
         private int _Height;
         private IBallRepository _Ball_Repository;
@@ -31,7 +16,6 @@ namespace logic_layer
             "#fa4c01",
             "#0f5c01",
             "#6c061a",
-            "#010001",
             "#ffd400",
             "#003db1",
             "#e71c01",
@@ -42,55 +26,63 @@ namespace logic_layer
             "#fefedf"
         };
 
-        public BallManager(int width, int height, IBallRepository ballRepository)
-        {
+        public BallManager(int width, int height, IBallRepository ballRepository) {
 
             _Width = width;
             _Height = height;
             _Ball_Repository = ballRepository;
         }
-        public int Width
-        {
+        public int Width {
             get => _Width;
         }
 
-        public int Height
-        {
+        public int Height {
             get => _Height;
         }
 
-        public void GenerateBalls(int amount)
-        {
+        public void GenerateBalls(int amount) {
             // hard coded value of ball radius
             double radius = 45.0;
             //ballColors.Shuffle();
             int colorIndex = 0;
-            for (int i = 0; i < amount; i++)
-            {
-                _Ball_Repository.AddBall(
-                    new Ball(
-                        radius,
-                        random.NextDouble() * (_Width - radius),
-                        random.NextDouble() * (_Height - radius),
-                        random.NextDouble() * 4,
-                        random.NextDouble() * 4,
-                        i,
-                        ballColors[colorIndex]
-                        )
-                    );
+            for (int i = 0; i < amount; i++) {
+                if ((i % 15) + 1 == 8) {
+                    _Ball_Repository.AddBall(
+                        new Ball(
+                            radius,
+                            random.NextDouble() * (_Width - radius),
+                            random.NextDouble() * (_Height - radius),
+                            random.NextDouble() * 4,
+                            random.NextDouble() * 4,
+                            i,
+                            "#010001"
+                            )
+                        );
+                }
+                else {
+                    _Ball_Repository.AddBall(
+                        new Ball(
+                            radius,
+                            random.NextDouble() * (_Width - radius),
+                            random.NextDouble() * (_Height - radius),
+                            random.NextDouble() * 4,
+                            random.NextDouble() * 4,
+                            i,
+                            ballColors[colorIndex]
+                            )
+                        );
+                }
                 colorIndex++;
-                if ( colorIndex > 15) {
+                if (colorIndex > 14) {
                     colorIndex = 0;
                 }
             }
         }
-       
-        public void ClearAllBalls()
-        {
+
+        public void ClearAllBalls() {
             _Ball_Repository.ClearAllBalls();
         }
-        public IReadOnlyList<Ball> GetAllBalls()
-        {
+        public IReadOnlyList<Ball> GetAllBalls() {
             return _Ball_Repository.GetAllBalls();
         }
 

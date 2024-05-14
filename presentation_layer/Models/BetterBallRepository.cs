@@ -1,10 +1,5 @@
-﻿using data_layer;
-using System;
-using System.Collections.Generic;
+﻿using System;
 using System.Collections.ObjectModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace presentation_layer.Models {
     internal class BetterBallRepository : IBetterBallRepository {
@@ -25,6 +20,6 @@ namespace presentation_layer.Models {
         public void ClearAllBalls() {
             _Balls.Clear();
         }
- 
+
     }
 }

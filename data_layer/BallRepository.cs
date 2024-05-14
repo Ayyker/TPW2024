@@ -1,29 +1,20 @@
-﻿
-namespace data_layer
-{
-    public class BallRepository : IBallRepository
-
-    {
+﻿namespace data_layer {
+    public class BallRepository : IBallRepository {
         private List<Ball> _Balls = new List<Ball>();
 
-        public void AddBall(Ball ball)
-        {
-            if (ball != null)
-            {
+        public void AddBall(Ball ball) {
+            if (ball != null) {
                 _Balls.Add(ball);
             }
-            else
-            {
+            else {
                 throw new ArgumentNullException("ball", "Ball cannot be null");
             }
         }
-        public List<Ball> GetAllBalls()
-        {
+        public List<Ball> GetAllBalls() {
             return _Balls;
         }
 
-        public void ClearAllBalls()
-        {
+        public void ClearAllBalls() {
             _Balls.Clear();
         }
 
