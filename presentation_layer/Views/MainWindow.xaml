@@ -23,7 +23,7 @@
 
         <Border Grid.Column="1" BorderBrush="SaddleBrown" BorderThickness="10" HorizontalAlignment="Center" VerticalAlignment="Center">
             <Canvas Height="{Binding Billard_Table_Height}" Width="{Binding Billard_Table_Width}" Background="Green" HorizontalAlignment="Center">
-                <ItemsControl ItemsSource="{Binding Balls}">
+                <ItemsControl ItemsSource="{Binding BallsWithTimer}">
                     <ItemsControl.ItemsPanel>
                         <ItemsPanelTemplate>
                             <Canvas/>

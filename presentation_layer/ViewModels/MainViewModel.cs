@@ -6,6 +6,7 @@ using System.Windows.Input;
 using presentation_layer.Models;
 using data_layer;
 using System.Windows.Threading;
+using System.Collections.ObjectModel;
 
 namespace presentation_layer.ViewModels
 {
@@ -31,6 +32,9 @@ namespace presentation_layer.ViewModels
         private int _Billard_Table_Height = 500;
         public int Billard_Table_Width => _Billard_Table_Width;
         public int Billard_Table_Height => _Billard_Table_Height;
+
+        private ObservableCollection<BallWithTimer> _ballsWithTimer = new ObservableCollection<BallWithTimer>();
+        public ObservableCollection<BallWithTimer> BallsWithTimer => _ballsWithTimer;
 
         public MainViewModel()
         {
@@ -66,7 +70,10 @@ namespace presentation_layer.ViewModels
             Is_Stop_Button_Enable = true;
             Is_Text_Field_Enable = false;
             _Simulation_Model.GenerateBalls(int.Parse(Amount_Of_Balls));
-            _Update_Timer.Start();
+
+            foreach (Ball ball in _Simulation_Model.GetBalls()) {
+                _ballsWithTimer.Add(new BallWithTimer(ball,Billard_Table_Width,Billard_Table_Height));
+            }
             NotifyPropertyChanged("CanStart");
             NotifyPropertyChanged("CanStop");
             NotifyPropertyChanged("CanEdit");
@@ -76,19 +83,22 @@ namespace presentation_layer.ViewModels
             Is_Start_Button_Enable = true;
             Is_Stop_Button_Enable = false;
             Is_Text_Field_Enable = true;
-            _Update_Timer.Stop();
+
+            foreach (BallWithTimer ballWithTimer in _ballsWithTimer) {
+                ballWithTimer.Stop();
+            }
+            _ballsWithTimer.Clear();
             _Simulation_Model.ClearAllBalls();
             NotifyPropertyChanged("CanStart");
             NotifyPropertyChanged("CanStop");
             NotifyPropertyChanged("CanEdit");
-            NotifyPropertyChanged("Balls");
         }
         private void Update_Simulation(object sender, EventArgs e)
         {
             _Simulation_Model.UpdateBalls();
             NotifyPropertyChanged("Balls");
         }
-        public IBall[]? Balls => _Simulation_Model.GetBalls().ToArray();
+        //public IBall[]? Balls => _Simulation_Model.GetBalls().ToArray();
         public bool Is_Start_Button_Enable
         {
             get => _Is_Start_Button_Active;
