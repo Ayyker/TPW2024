@@ -1,13 +1,36 @@
 ﻿using data_layer;
 using System;
+using System.ComponentModel;
+using System.Runtime.CompilerServices;
 using System.Windows.Threading;
 
 namespace presentation_layer.ViewModels {
-    public class BallWithTimer {
+    public class BallWithTimer : INotifyPropertyChanged{
+        public event PropertyChangedEventHandler PropertyChanged;
+        protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null) {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+        }
         public Ball Ball { get; private set; }
 
-        public double X_position => Ball.X_position;
-        public double Y_position => Ball.Y_position;
+        public double X_position {
+            get => Ball.X_position;
+            set {
+                if (Ball.X_position != value) {
+                    Ball.X_position = value;
+                    OnPropertyChanged();
+                }
+            }
+        }
+
+        public double Y_position {
+            get => Ball.Y_position;
+            set {
+                if (Ball.Y_position != value) {
+                    Ball.Y_position = value;
+                    OnPropertyChanged();
+                }
+            }
+        }
         public double Radius => Ball.Radius;
         public string Color => Ball.Color;
         public int Ball_Number => Ball.Ball_Number;
@@ -20,7 +43,7 @@ namespace presentation_layer.ViewModels {
             _Width = width;
             _Height = height;
             _timer = new DispatcherTimer();
-            _timer.Interval = TimeSpan.FromMilliseconds(100); // Możesz dostosować interwał zależnie od potrzeb symulacji
+            _timer.Interval = TimeSpan.FromMilliseconds(1); 
             _timer.Tick += (sender, args) => UpdateBall();
             _timer.Start();
         }
@@ -30,27 +53,27 @@ namespace presentation_layer.ViewModels {
             double new_y_position = Ball.Y_position + Ball.Y_velocity;
 
             if (new_x_position <= 0) {
-                Ball.X_position = 0;
+                X_position = 0;
                 Ball.X_velocity *= -1.0;
             }
             else if (new_x_position + Ball.Radius >= _Width) {
-                Ball.X_position = _Width - Ball.Radius;
+                X_position = _Width - Ball.Radius;
                 Ball.X_velocity *= -1.0;
             }
             else {
-                Ball.X_position = new_x_position;
+                X_position = new_x_position;
             }
 
             if (new_y_position <= 0) {
-                Ball.Y_position = 0;
+                Y_position = 0;
                 Ball.Y_velocity *= -1.0;
             }
             else if (new_y_position + Ball.Radius >= _Height) {
-                Ball.Y_position = _Height - Ball.Radius;
+                Y_position = _Height - Ball.Radius;
                 Ball.Y_velocity *= -1.0;
             }
             else {
-                Ball.Y_position = new_y_position;
+                Y_position = new_y_position;
             }
         }
 
