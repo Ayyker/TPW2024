@@ -33,8 +33,8 @@ namespace presentation_layer.ViewModels
         public int Billard_Table_Width => _Billard_Table_Width;
         public int Billard_Table_Height => _Billard_Table_Height;
 
-        private ObservableCollection<BallWithTimer> _ballsWithTimer = new ObservableCollection<BallWithTimer>();
-        public ObservableCollection<BallWithTimer> BallsWithTimer => _ballsWithTimer;
+        //private ObservableCollection<BetterBall> _ballsWithTimer = new ObservableCollection<BetterBall>();
+        public ObservableCollection<IBetterBall> BallsWithTimer => _Simulation_Model.GetBalls();
 
         public MainViewModel()
         {
@@ -47,9 +47,9 @@ namespace presentation_layer.ViewModels
             Is_Stop_Button_Enable = false;
             Is_Text_Field_Enable = true;
 
-            _Update_Timer = new DispatcherTimer();
-            _Update_Timer.Interval = TimeSpan.FromMilliseconds(1);
-            _Update_Timer.Tick += Update_Simulation;
+            //_Update_Timer = new DispatcherTimer();
+            //_Update_Timer.Interval = TimeSpan.FromMilliseconds(1);
+            //_Update_Timer.Tick += Update_Simulation;
         }
 
         public string Amount_Of_Balls
@@ -71,9 +71,9 @@ namespace presentation_layer.ViewModels
             Is_Text_Field_Enable = false;
             _Simulation_Model.GenerateBalls(int.Parse(Amount_Of_Balls));
 
-            foreach (Ball ball in _Simulation_Model.GetBalls()) {
-                _ballsWithTimer.Add(new BallWithTimer(ball,Billard_Table_Width,Billard_Table_Height));
-            }
+            //foreach (Ball ball in _Simulation_Model.GetBalls()) {
+            //    _ballsWithTimer.Add(new BetterBall(ball,Billard_Table_Width,Billard_Table_Height));
+            //}
             NotifyPropertyChanged("CanStart");
             NotifyPropertyChanged("CanStop");
             NotifyPropertyChanged("CanEdit");
@@ -84,20 +84,20 @@ namespace presentation_layer.ViewModels
             Is_Stop_Button_Enable = false;
             Is_Text_Field_Enable = true;
 
-            foreach (BallWithTimer ballWithTimer in _ballsWithTimer) {
-                ballWithTimer.Stop();
-            }
-            _ballsWithTimer.Clear();
+            //foreach (BetterBall ballWithTimer in _ballsWithTimer) {
+            //    ballWithTimer.Stop();
+            //}
+            //_ballsWithTimer.Clear();
             _Simulation_Model.ClearAllBalls();
             NotifyPropertyChanged("CanStart");
             NotifyPropertyChanged("CanStop");
             NotifyPropertyChanged("CanEdit");
         }
-        private void Update_Simulation(object sender, EventArgs e)
-        {
-            _Simulation_Model.UpdateBalls();
-            NotifyPropertyChanged("Balls");
-        }
+        //private void Update_Simulation(object sender, EventArgs e)
+        //{
+        //    _Simulation_Model.UpdateBalls();
+        //    NotifyPropertyChanged("Balls");
+        //}
         //public IBall[]? Balls => _Simulation_Model.GetBalls().ToArray();
         public bool Is_Start_Button_Enable
         {

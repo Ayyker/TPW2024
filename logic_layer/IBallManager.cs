@@ -7,7 +7,6 @@ namespace logic_layer
         int Width { get; }
         int Height { get; }
         void GenerateBalls(int amount);
-        void UpdateBalls();
         void ClearAllBalls();
         IReadOnlyList<Ball> GetAllBalls();
     }
