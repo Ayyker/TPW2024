@@ -25,6 +25,10 @@ namespace data_layer {
             Ball_Number = (id % 15) + 1;
             _Weight = _Weight;
         }
+        public bool isMoving {
+            get => _isMoving;
+            set => _isMoving = value;
+        }
         public double Radius {
             get => _Radius;
             set => _Radius = value;

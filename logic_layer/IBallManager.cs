@@ -1,4 +1,5 @@
 ﻿using data_layer;
+using System.Collections.ObjectModel;
 
 namespace logic_layer {
     public interface IBallManager {
@@ -6,6 +7,8 @@ namespace logic_layer {
         int Height { get; }
         void GenerateBalls(int amount);
         void ClearAllBalls();
-        IReadOnlyList<Ball> GetAllBalls();
+        List<Ball> GetAllBalls();
+        public void UpdateBalls();
+        event NotifyDelegateBallManager.NotifyBallManager? OnChange;
     }
 }

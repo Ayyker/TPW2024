@@ -5,6 +5,7 @@ using System.Windows.Input;
 using presentation_layer.Models;
 using System.Windows.Threading;
 using System.Collections.ObjectModel;
+using data_layer;
 
 namespace presentation_layer.ViewModels {
     public class MainViewModel : INotifyPropertyChanged {
@@ -12,7 +13,10 @@ namespace presentation_layer.ViewModels {
         private void NotifyPropertyChanged([CallerMemberName] string propertyName = null) {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
+        protected virtual void OnPropertyChanged([CallerMemberName] string? propertyName = null) {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
 
+        }
         private ISimulationModel _Simulation_Model;
         private String _Amount_Of_Balls;
         private bool _Is_Start_Button_Active;
@@ -27,7 +31,8 @@ namespace presentation_layer.ViewModels {
         public int Billard_Table_Width => _Billard_Table_Width;
         public int Billard_Table_Height => _Billard_Table_Height;
 
-        public ObservableCollection<IBetterBall> BallsWithTimer => _Simulation_Model.GetBalls();
+        public ObservableCollection<Ball> Balls => _Simulation_Model.GetBalls();
+
 
         public MainViewModel() {
             Start_Simulation_Command = new RelayCommand(Start_Simulation, () => _Is_Start_Button_Active);
@@ -38,7 +43,11 @@ namespace presentation_layer.ViewModels {
             Is_Start_Button_Enable = true;
             Is_Stop_Button_Enable = false;
             Is_Text_Field_Enable = true;
-
+            _Simulation_Model.BallManager.OnChange += UpdateBalls;
+        }
+        public void UpdateBalls() {
+            OnPropertyChanged("Balls");
+            // IsStopEnable = true;
         }
 
         public string Amount_Of_Balls {
@@ -56,6 +65,7 @@ namespace presentation_layer.ViewModels {
             Is_Stop_Button_Enable = true;
             Is_Text_Field_Enable = false;
             _Simulation_Model.GenerateBalls(int.Parse(Amount_Of_Balls));
+            _Simulation_Model.UpdateBalls();
             NotifyPropertyChanged("CanStart");
             NotifyPropertyChanged("CanStop");
             NotifyPropertyChanged("CanEdit");
@@ -65,6 +75,7 @@ namespace presentation_layer.ViewModels {
             Is_Stop_Button_Enable = false;
             Is_Text_Field_Enable = true;
             _Simulation_Model.ClearAllBalls();
+
             NotifyPropertyChanged("CanStart");
             NotifyPropertyChanged("CanStop");
             NotifyPropertyChanged("CanEdit");
