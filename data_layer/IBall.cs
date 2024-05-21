@@ -6,6 +6,9 @@
         public double X_velocity { get; set; }
         public double Y_velocity { get; set; }
         public int ID { get; set; }
+        double Weight { get; set; }
+        
+
 
     }
 }
