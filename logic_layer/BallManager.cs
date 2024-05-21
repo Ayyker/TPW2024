@@ -8,6 +8,7 @@ namespace logic_layer {
         private IBallRepository _Ball_Repository;
         private Random random = new Random();
         private List<string> ballColors = new List<string>
+
        {
             "#ffd400",
             "#003db1",
@@ -25,6 +26,9 @@ namespace logic_layer {
             "#6c061a",
             "#fefedf"
         };
+
+        private readonly object _lock = new object();
+        public event NotifyDelegateBallManager.NotifyBallManager? OnChange;
 
         public BallManager(int width, int height, IBallRepository ballRepository) {
 
@@ -55,7 +59,8 @@ namespace logic_layer {
                             random.NextDouble() * 4,
                             random.NextDouble() * 4,
                             i,
-                            "#010001"
+                            "#010001",
+                            5 // do zmiany
                             )
                         );
                 }
@@ -68,7 +73,8 @@ namespace logic_layer {
                             random.NextDouble() * 4,
                             random.NextDouble() * 4,
                             i,
-                            ballColors[colorIndex]
+                            ballColors[colorIndex],
+                            5 // do zmiany
                             )
                         );
                 }

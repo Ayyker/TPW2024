@@ -1,5 +1,5 @@
 ﻿namespace logic_layer {
-    internal class NotifyDelegateBallManager {
+    public class NotifyDelegateBallManager {
         public delegate void NotifyBallManager();
     }
 }
