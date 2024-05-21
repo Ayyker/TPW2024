@@ -11,6 +11,9 @@ namespace data_layer {
         private int _Ball_Number;
         private double _Weight;
 
+        private bool _isMoving = true;
+        public event NotifyDelegateBall.NotifyBall? OnChange;
+
         public Ball(double radius, double x, double y, double x_velocity, double y_velocity, int id, string color, double weight) {
             Radius = radius;
             X_position = x;
@@ -64,5 +67,16 @@ namespace data_layer {
         public override string ToString() {
             return $"Ball at ({X_position}, {Y_position}) with velocity ({X_velocity}, {Y_velocity}), radius {Radius} and {Color} color.";
         }
+
+        private void MoveBall(Barrier barrier) {
+            while (_isMoving) {
+                OnChange?.Invoke(this);
+                barrier.SignalAndWait();
+            }
+        }
+        public void NewThread(Barrier barrier) {
+            new Thread(() => this.MoveBall(barrier)).Start();
+        }
+
     }
 }
