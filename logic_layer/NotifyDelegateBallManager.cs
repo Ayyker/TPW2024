@@ -1,10 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace logic_layer {
+﻿namespace logic_layer {
     internal class NotifyDelegateBallManager {
+        public delegate void NotifyBallManager();
     }
 }
