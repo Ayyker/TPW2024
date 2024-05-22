@@ -42,16 +42,16 @@ namespace logic_layer {
 
         public void GenerateBalls(int amount) {
             // hard coded value of ball radius and weight
-            double radius = 45.0;
-            double weight = 5;
+            double weight = random.NextDouble() *2;
             //ballColors.Shuffle();
             int colorIndex = 0;
             for (int i = 0; i < amount; i++) {
+                double radius = random.NextDouble() * 30 + 40;
                 if ((i % 15) + 1 == 8) {
                     _Ball_Repository.AddBall(
                         new Ball(
                             radius,
-                            weight,
+                            radius * 0.2,
                             random.NextDouble() * (_Width - radius),
                             random.NextDouble() * (_Height - radius),
                             random.NextDouble() * 4,
@@ -65,7 +65,7 @@ namespace logic_layer {
                     _Ball_Repository.AddBall(
                         new Ball(
                             radius,
-                            weight,
+                            radius * 0.2 ,
                             random.NextDouble() * (_Width - radius),
                             random.NextDouble() * (_Height - radius),
                             random.NextDouble() * 4,
