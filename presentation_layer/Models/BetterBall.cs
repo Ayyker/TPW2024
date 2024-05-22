@@ -4,23 +4,25 @@ using System;
 using System.ComponentModel;
 using System.Linq;
 using System.Runtime.CompilerServices;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Threading;
 
 namespace presentation_layer.ViewModels {
     public class BetterBall : IBetterBall, INotifyPropertyChanged {
-
-        private DispatcherTimer _timer;
         private int _Width;
         private int _Height;
         private readonly IBetterBallRepository _repository;
         private readonly object _lock = new object();
+        private CancellationTokenSource _cancellationTokenSource;
 
         public event PropertyChangedEventHandler PropertyChanged;
         protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null) {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
+
         public Ball Ball { get; set; }
+
         public double X_position {
             get => Ball.X_position;
             set {
@@ -30,6 +32,7 @@ namespace presentation_layer.ViewModels {
                 }
             }
         }
+
         public double Y_position {
             get => Ball.Y_position;
             set {
@@ -39,14 +42,17 @@ namespace presentation_layer.ViewModels {
                 }
             }
         }
+
         public double X_velocity {
             get => Ball.X_velocity;
             set => Ball.X_velocity = value;
         }
+
         public double Y_velocity {
             get => Ball.Y_velocity;
             set => Ball.Y_velocity = value;
         }
+
         public double Radius => Ball.Radius;
         public string Color => Ball.Color;
         public int Ball_Number => Ball.Ball_Number;
@@ -56,36 +62,49 @@ namespace presentation_layer.ViewModels {
             _Width = width;
             _Height = height;
             _repository = repository;
-            _timer = new DispatcherTimer();
-            _timer.Interval = TimeSpan.FromMilliseconds(10);  // Ustawienie odpowiedniego interwału
-            _timer.Tick += (sender, args) => UpdateBall();
-            _timer.Start();
-            Console.WriteLine($"Ball {Ball_Number} created with position ({X_position}, {Y_position}) and velocity ({X_velocity}, {Y_velocity}).");
+
+            _cancellationTokenSource = new CancellationTokenSource();
+            StartSimulation();
+        }
+
+        private void StartSimulation() {
+            var token = _cancellationTokenSource.Token;
+            Task.Run(async () =>
+            {
+                while (!token.IsCancellationRequested) {
+                    UpdateBall();
+                    await Task.Delay(10, token);
+                }
+            }, token);
         }
 
         public void UpdateBall() {
-            double new_x_position = X_position + X_velocity;
-            double new_y_position = Y_position + Y_velocity;
+            lock (_lock) {
+                // Aktualizacja pozycji kuli na podstawie jej prędkości
+                double new_x_position = X_position + X_velocity;
+                double new_y_position = Y_position + Y_velocity;
 
-            // Odbicie od ścian
-            if (new_x_position <= 0 || new_x_position + Radius >= _Width) {
-                X_velocity *= -1.0;
-                new_x_position = X_position + X_velocity; 
-                Console.WriteLine($"Ball {Ball_Number} bounced horizontally. New velocity: ({X_velocity}, {Y_velocity}).");
-            }
-            if (new_y_position <= 0 || new_y_position + Radius >= _Height) {
-                Y_velocity *= -1.0;
-                new_y_position = Y_position + Y_velocity;
-                Console.WriteLine($"Ball {Ball_Number} bounced vertically. New velocity: ({X_velocity}, {Y_velocity}).");
-            }
+                // Odbicie od ścian
+                if (new_x_position <= 0 || new_x_position + Radius >= _Width) {
+                    X_velocity *= -1.0;
+                    new_x_position = X_position + X_velocity; // Aktualizacja pozycji po odbiciu
+                    Console.WriteLine($"Ball {Ball_Number} bounced horizontally. New velocity: ({X_velocity}, {Y_velocity}).");
+                }
+                if (new_y_position <= 0 || new_y_position + Radius >= _Height) {
+                    Y_velocity *= -1.0;
+                    new_y_position = Y_position + Y_velocity; // Aktualizacja pozycji po odbiciu
+                    Console.WriteLine($"Ball {Ball_Number} bounced vertically. New velocity: ({X_velocity}, {Y_velocity}).");
+                }
 
-            X_position = new_x_position;
-            Y_position = new_y_position;
+                X_position = new_x_position;
+                Y_position = new_y_position;
 
-            foreach (var otherBall in _repository.GetAllBalls().OfType<BetterBall>()) {
-                if (otherBall != this && IsColliding(otherBall)) {
-                    Console.WriteLine($"Ball {Ball_Number} collided with Ball {otherBall.Ball_Number}.");
-                    ResolveCollision(otherBall);
+                // Sprawdzanie kolizji z innymi kulami
+                foreach (var otherBall in _repository.GetAllBalls().OfType<BetterBall>()) {
+                    if (otherBall != this && IsColliding(otherBall)) {
+                        Console.WriteLine($"Ball {Ball_Number} collided with Ball {otherBall.Ball_Number}.");
+                        ResolveCollision(otherBall);
+                    }
                 }
             }
         }
@@ -117,8 +136,8 @@ namespace presentation_layer.ViewModels {
             // Odległość
             double distance = Math.Sqrt(dx * dx + dy * dy);
 
-
             if (distance == 0) {
+                // Zapobiegaj dzieleniu przez zero
                 distance = this.Radius + otherBall.Radius;
                 dx = distance;
                 dy = 0;
@@ -144,42 +163,43 @@ namespace presentation_layer.ViewModels {
                 otherBall.Y_velocity = newYSpeedForBall2;
             }
 
+            // Sprawdzenie, czy kule zachodzą na siebie
             double overlap = (this.Radius / 2 + otherBall.Radius / 2) - distance;
 
             if (overlap > 0) {
-                lock (_lock) {
-                    // Przesunięcie kul tak, aby nie zachodziły na siebie
-                    double correction = overlap / 2;
+                // Przesunięcie kul tak, aby nie zachodziły na siebie
+                double correction = overlap / 2;
 
-                    double correctionX = correction * nx;
-                    double correctionY = correction * ny;
+                double correctionX = correction * nx;
+                double correctionY = correction * ny;
 
-                    // Nowe pozycje kul
-                    double thisNewX = this.X_position - correctionX;
-                    double thisNewY = this.Y_position - correctionY;
-                    double otherNewX = otherBall.X_position + correctionX;
-                    double otherNewY = otherBall.Y_position + correctionY;
+                // Nowe pozycje kul
+                double thisNewX = this.X_position - correctionX;
+                double thisNewY = this.Y_position - correctionY;
+                double otherNewX = otherBall.X_position + correctionX;
+                double otherNewY = otherBall.Y_position + correctionY;
 
-                    // Upewnienie się, że kule pozostają w granicach planszy
-                    if (thisNewX - this.Radius / 2 >= 0 && thisNewX + this.Radius / 2 <= _Width) {
-                        this.X_position = thisNewX;
-                    }
-                    if (thisNewY - this.Radius / 2 >= 0 && thisNewY + this.Radius / 2 <= _Height) {
-                        this.Y_position = thisNewY;
-                    }
-                    if (otherNewX - otherBall.Radius / 2 >= 0 && otherNewX + otherBall.Radius / 2 <= _Width) {
-                        otherBall.X_position = otherNewX;
-                    }
-                    if (otherNewY - otherBall.Radius / 2 >= 0 && otherNewY + otherBall.Radius / 2 <= _Height) {
-                        otherBall.Y_position = otherNewY;
-                    }
-                } 
+                // Upewnienie się, że kule pozostają w granicach planszy
+                if (thisNewX - this.Radius / 2 >= 0 && thisNewX + this.Radius / 2 <= _Width) {
+                    this.X_position = thisNewX;
+                }
+                if (thisNewY - this.Radius / 2 >= 0 && thisNewY + this.Radius / 2 <= _Height) {
+                    this.Y_position = thisNewY;
+                }
+                if (otherNewX - otherBall.Radius / 2 >= 0 && otherNewX + otherBall.Radius / 2 <= _Width) {
+                    otherBall.X_position = otherNewX;
+                }
+                if (otherNewY - otherBall.Radius / 2 >= 0 && otherNewY + otherBall.Radius / 2 <= _Height) {
+                    otherBall.Y_position = otherNewY;
+                }
             }
+
+            // Dodanie logowania po rozwiązaniu kolizji
             Console.WriteLine($"Collision resolved. Ball {Ball_Number} new velocity: ({this.X_velocity}, {this.Y_velocity}). Ball {otherBall.Ball_Number} new velocity: ({otherBall.X_velocity}, {otherBall.Y_velocity}).");
         }
 
         public void Stop() {
-            _timer.Stop();
+            _cancellationTokenSource.Cancel();
         }
     }
 }

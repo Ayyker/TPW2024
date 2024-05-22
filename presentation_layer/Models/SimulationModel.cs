@@ -2,10 +2,11 @@
 using logic_layer;
 using presentation_layer.ViewModels;
 using System.Collections.ObjectModel;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace presentation_layer.Models {
     public class SimulationModel : ISimulationModel {
-
         private IBallManager _Ball_Manager;
         private IBetterBallRepository _BetterBallRepository;
         private int _Width;
@@ -18,23 +19,26 @@ namespace presentation_layer.Models {
             _BetterBallRepository = new BetterBallRepository();
         }
 
-        public void GenerateBalls(int amount) {
+        public async Task GenerateBalls(int amount) {
             _Ball_Manager.GenerateBalls(amount);
             foreach (Ball ball in _Ball_Manager.GetAllBalls()) {
-                _BetterBallRepository.AddBall(new BetterBall(ball, _Width, _Height, _BetterBallRepository));
+                var betterBall = new BetterBall(ball, _Width, _Height, _BetterBallRepository);
+                _BetterBallRepository.AddBall(betterBall);
             }
+            await Task.CompletedTask;
         }
 
-        public void ClearAllBalls() {
-            foreach (BetterBall betterBall in _BetterBallRepository.GetAllBalls()) {
+        public async Task ClearAllBalls() {
+            foreach (BetterBall betterBall in _BetterBallRepository.GetAllBalls().OfType<BetterBall>()) {
                 betterBall.Stop();
             }
             _Ball_Manager.ClearAllBalls();
             _BetterBallRepository.ClearAllBalls();
+            await Task.CompletedTask;
         }
+
         public ObservableCollection<IBetterBall> GetBalls() {
             return _BetterBallRepository.GetAllBalls();
         }
-
     }
 }
