@@ -1,9 +1,13 @@
 ﻿using data_layer;
+using presentation_layer.ViewModels;
+using System.Threading.Tasks;
 
 namespace presentation_layer.Models {
     public interface IBetterBall {
         public Ball Ball { get; set; }
-        private void UpdateBall() { }
+        public void UpdateBall();
+        public bool IsColliding(BetterBall otherBall);
+        public void ResolveCollision(BetterBall otherBall);
         public void Stop() { }
     }
 }

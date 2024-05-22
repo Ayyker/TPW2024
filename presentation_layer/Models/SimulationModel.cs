@@ -21,7 +21,7 @@ namespace presentation_layer.Models {
         public void GenerateBalls(int amount) {
             _Ball_Manager.GenerateBalls(amount);
             foreach (Ball ball in _Ball_Manager.GetAllBalls()) {
-                _BetterBallRepository.AddBall(new BetterBall(ball, _Width, _Height));
+                _BetterBallRepository.AddBall(new BetterBall(ball, _Width, _Height, _BetterBallRepository));
             }
         }
 

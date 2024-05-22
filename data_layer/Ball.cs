@@ -2,6 +2,7 @@
 namespace data_layer {
     public class Ball : IBall {
         private int _ID;
+        private double _Weight;
         private double _X_position;
         private double _Y_position;
         private double _X_velocity;
@@ -10,8 +11,9 @@ namespace data_layer {
         private string _Color;
         private int _Ball_Number;
 
-        public Ball(double radius, double x, double y, double x_velocity, double y_velocity, int id, string color) {
+        public Ball(double radius, double weight, double x, double y, double x_velocity, double y_velocity, int id, string color) {
             Radius = radius;
+            Weight = weight;
             X_position = x;
             Y_position = y;
             X_velocity = x_velocity;
@@ -23,6 +25,10 @@ namespace data_layer {
         public double Radius {
             get => _Radius;
             set => _Radius = value;
+        }
+        public double Weight {
+            get => _Weight;
+            set => _Weight = value;
         }
 
         public double X_position {

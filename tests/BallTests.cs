@@ -2,7 +2,7 @@
 
 namespace tests {
     public class BallTests {
-        Ball _ball = new Ball(45, 20, 20, 20, 20, 1, "black");
+        Ball _ball = new Ball(45, 5, 20, 20, 20, 20, 1, "black");
 
         [Test]
         public void GetterTest() {
@@ -37,7 +37,7 @@ namespace tests {
 
         [Test]
         public void ToStringTest() {
-            Ball _ball2 = new Ball(84, 2, 1, 3, 7, 1, "yellow");
+            Ball _ball2 = new Ball(84, 5, 2, 1, 3, 7, 1, "yellow");
             Assert.That(_ball2.ToString(), Is.EqualTo("Ball at (2, 1) with velocity (3, 7), radius 84 and yellow color."));
         }
     }

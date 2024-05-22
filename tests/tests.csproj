@@ -18,8 +18,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\data_layer\data_layer.csproj" />
-    <ProjectReference Include="..\logic_layer\logic_layer.csproj" />
     <ProjectReference Include="..\presentation_layer\presentation_layer.csproj" />
   </ItemGroup>
 
