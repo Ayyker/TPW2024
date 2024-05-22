@@ -4,6 +4,7 @@ using System;
 using System.ComponentModel;
 using System.Linq;
 using System.Runtime.CompilerServices;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Threading;
 
@@ -15,6 +16,8 @@ namespace presentation_layer.ViewModels {
         private int _Height;
         private readonly IBetterBallRepository _repository;
         private readonly object _lock = new object();
+        private Thread _thread;    
+        private bool _running;
 
         public event PropertyChangedEventHandler PropertyChanged;
         protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null) {
@@ -56,11 +59,16 @@ namespace presentation_layer.ViewModels {
             _Width = width;
             _Height = height;
             _repository = repository;
-            _timer = new DispatcherTimer();
-            _timer.Interval = TimeSpan.FromMilliseconds(10);  // Ustawienie odpowiedniego interwału
-            _timer.Tick += (sender, args) => UpdateBall();
-            _timer.Start();
+            _running = true;
+            _thread = new Thread(Run);
+            _thread.Start();
             Console.WriteLine($"Ball {Ball_Number} created with position ({X_position}, {Y_position}) and velocity ({X_velocity}, {Y_velocity}).");
+        }
+        public void Run() {
+            while (_running) {
+                UpdateBall();
+                Thread.Sleep(10);
+            }
         }
 
         public void UpdateBall() {
@@ -81,16 +89,18 @@ namespace presentation_layer.ViewModels {
 
             X_position = new_x_position;
             Y_position = new_y_position;
-
-            foreach (var otherBall in _repository.GetAllBalls().OfType<BetterBall>()) {
-                if (otherBall != this && IsColliding(otherBall)) {
-                    Console.WriteLine($"Ball {Ball_Number} collided with Ball {otherBall.Ball_Number}.");
-                    ResolveCollision(otherBall);
+            lock (_lock) {
+                foreach (var otherBall in _repository.GetAllBalls().OfType<BetterBall>()) {
+                    if (otherBall != this && IsColliding(otherBall)) {
+                        Console.WriteLine($"Ball {Ball_Number} collided with Ball {otherBall.Ball_Number}.");
+                        ResolveCollision(otherBall);
+                    }
                 }
             }
         }
 
         public bool IsColliding(BetterBall otherBall) {
+
             double dx = (otherBall.X_position + otherBall.Radius / 2) - (this.X_position + this.Radius / 2);
             double dy = (otherBall.Y_position + otherBall.Radius / 2) - (this.Y_position + this.Radius / 2);
             double distance = Math.Sqrt(dx * dx + dy * dy);
@@ -179,7 +189,8 @@ namespace presentation_layer.ViewModels {
         }
 
         public void Stop() {
-            _timer.Stop();
+            _running = false;    // Zatrzymanie pętli w wątku
+            _thread.Join();      // Oczekiwanie na zakończenie wątku
         }
     }
 }
