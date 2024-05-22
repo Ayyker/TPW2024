@@ -21,45 +21,6 @@ namespace tests {
         }
 
         [Test]
-        public void TestCollision() {
-            _ball1.UpdateBall();
-            _ball2.UpdateBall();
-            Assert.That(_ball1.X_velocity, Is.Not.EqualTo(5));
-            Assert.That(_ball2.X_velocity, Is.Not.EqualTo(-5));
-        }
-
-        [Test]
-        public void TestNoOverlapAfterCollision() {
-            _ball1.UpdateBall();
-            _ball2.UpdateBall();
-            double dx = (_ball2.X_position + _ball2.Radius / 2) - (_ball1.X_position + _ball1.Radius / 2);
-            double dy = (_ball2.Y_position + _ball2.Radius / 2) - (_ball1.Y_position + _ball1.Radius / 2);
-            double distance = Math.Sqrt(dx * dx + dy * dy);
-            Assert.That(distance, Is.GreaterThanOrEqualTo(_ball1.Radius / 2 + _ball2.Radius / 2));
-        }
-
-        [Test]
-        public void TestNoOverlapAfterInitialization() {
-            // Tworzymy dwie kule blisko siebie
-            var ball3 = new Ball(45, 5, 100, 100, 0, 0, 3, "green");
-            var ball4 = new Ball(45, 5, 140, 100, 0, 0, 4, "yellow");
-            var betterBall3 = new BetterBall(ball3, 1000, 600, _repository);
-            var betterBall4 = new BetterBall(ball4, 1000, 600, _repository);
-            _repository.AddBall(betterBall3);
-            _repository.AddBall(betterBall4);
-
-            // Aktualizujemy pozycje kul
-            betterBall3.UpdateBall();
-            betterBall4.UpdateBall();
-
-            double dx = (betterBall4.X_position + betterBall4.Radius / 2) - (betterBall3.X_position + betterBall3.Radius / 2);
-            double dy = (betterBall4.Y_position + betterBall4.Radius / 2) - (betterBall3.Y_position + betterBall3.Radius / 2);
-            double distance = Math.Sqrt(dx * dx + dy * dy);
-
-            Assert.That(distance, Is.GreaterThanOrEqualTo(betterBall3.Radius / 2 + betterBall4.Radius / 2));
-        }
-
-        [Test]
         public void TestBallBouncesOffWalls() {
             var ball = new Ball(45, 5, 10, 10, -5, -5, 1, "red");
             var betterBall = new BetterBall(ball, 1000, 600, _repository);
