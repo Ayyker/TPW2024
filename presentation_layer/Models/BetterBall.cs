@@ -9,7 +9,6 @@ using System.Windows.Threading;
 
 namespace presentation_layer.ViewModels {
     public class BetterBall : IBetterBall, INotifyPropertyChanged {
-
         private DispatcherTimer _timer;
         private int _Width;
         private int _Height;
@@ -20,6 +19,7 @@ namespace presentation_layer.ViewModels {
         protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null) {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
+
         public Ball Ball { get; set; }
         public double X_position {
             get => Ball.X_position;
@@ -64,28 +64,30 @@ namespace presentation_layer.ViewModels {
         }
 
         public void UpdateBall() {
-            double new_x_position = X_position + X_velocity;
-            double new_y_position = Y_position + Y_velocity;
+            lock (_lock) {
+                double new_x_position = X_position + X_velocity;
+                double new_y_position = Y_position + Y_velocity;
 
-            // Odbicie od ścian
-            if (new_x_position <= 0 || new_x_position + Radius >= _Width) {
-                X_velocity *= -1.0;
-                new_x_position = X_position + X_velocity; 
-                Console.WriteLine($"Ball {Ball_Number} bounced horizontally. New velocity: ({X_velocity}, {Y_velocity}).");
-            }
-            if (new_y_position <= 0 || new_y_position + Radius >= _Height) {
-                Y_velocity *= -1.0;
-                new_y_position = Y_position + Y_velocity;
-                Console.WriteLine($"Ball {Ball_Number} bounced vertically. New velocity: ({X_velocity}, {Y_velocity}).");
-            }
+                // Odbicie od ścian
+                if (new_x_position <= 0 || new_x_position + Radius >= _Width) {
+                    X_velocity *= -1.0;
+                    new_x_position = X_position + X_velocity;
+                    Console.WriteLine($"Ball {Ball_Number} bounced horizontally. New velocity: ({X_velocity}, {Y_velocity}).");
+                }
+                if (new_y_position <= 0 || new_y_position + Radius >= _Height) {
+                    Y_velocity *= -1.0;
+                    new_y_position = Y_position + Y_velocity;
+                    Console.WriteLine($"Ball {Ball_Number} bounced vertically. New velocity: ({X_velocity}, {Y_velocity}).");
+                }
 
-            X_position = new_x_position;
-            Y_position = new_y_position;
+                X_position = new_x_position;
+                Y_position = new_y_position;
 
-            foreach (var otherBall in _repository.GetAllBalls().OfType<BetterBall>()) {
-                if (otherBall != this && IsColliding(otherBall)) {
-                    Console.WriteLine($"Ball {Ball_Number} collided with Ball {otherBall.Ball_Number}.");
-                    ResolveCollision(otherBall);
+                foreach (var otherBall in _repository.GetAllBalls().OfType<BetterBall>()) {
+                    if (otherBall != this && IsColliding(otherBall)) {
+                        Console.WriteLine($"Ball {Ball_Number} collided with Ball {otherBall.Ball_Number}.");
+                        Task.Run(() => ResolveCollision(otherBall));
+                    }
                 }
             }
         }
@@ -97,7 +99,7 @@ namespace presentation_layer.ViewModels {
             return distance < (this.Radius / 2 + otherBall.Radius / 2);
         }
 
-        public void ResolveCollision(BetterBall otherBall) {
+        public async Task ResolveCollision(BetterBall otherBall) {
             Console.WriteLine($"Resolving collision between Ball {Ball_Number} and Ball {otherBall.Ball_Number}.");
 
             // Wejściowe prędkości
@@ -116,7 +118,6 @@ namespace presentation_layer.ViewModels {
 
             // Odległość
             double distance = Math.Sqrt(dx * dx + dy * dy);
-
 
             if (distance == 0) {
                 distance = this.Radius + otherBall.Radius;
@@ -173,8 +174,9 @@ namespace presentation_layer.ViewModels {
                     if (otherNewY - otherBall.Radius / 2 >= 0 && otherNewY + otherBall.Radius / 2 <= _Height) {
                         otherBall.Y_position = otherNewY;
                     }
-                } 
+                }
             }
+            await Task.CompletedTask;
             Console.WriteLine($"Collision resolved. Ball {Ball_Number} new velocity: ({this.X_velocity}, {this.Y_velocity}). Ball {otherBall.Ball_Number} new velocity: ({otherBall.X_velocity}, {otherBall.Y_velocity}).");
         }
 

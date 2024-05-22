@@ -7,7 +7,7 @@ namespace presentation_layer.Models {
         public Ball Ball { get; set; }
         public void UpdateBall();
         public bool IsColliding(BetterBall otherBall);
-        public void ResolveCollision(BetterBall otherBall);
+        public Task ResolveCollision(BetterBall otherBall);
         public void Stop() { }
     }
 }
