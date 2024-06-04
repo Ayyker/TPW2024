@@ -137,43 +137,40 @@ namespace presentation_layer.ViewModels {
             double newXSpeedForBall2 = vx2 + p * m1 * nx;
             double newYSpeedForBall2 = vy2 + p * m1 * ny;
 
-            lock (_lock) {
-                // Aktualizacja prędkości po kolizji
-                this.X_velocity = newXSpeedForBall;
-                this.Y_velocity = newYSpeedForBall;
-                otherBall.X_velocity = newXSpeedForBall2;
-                otherBall.Y_velocity = newYSpeedForBall2;
-            }
+            // Aktualizacja prędkości po kolizji
+            this.X_velocity = newXSpeedForBall;
+            this.Y_velocity = newYSpeedForBall;
+            otherBall.X_velocity = newXSpeedForBall2;
+            otherBall.Y_velocity = newYSpeedForBall2;
+
 
             double overlap = (this.Radius / 2 + otherBall.Radius / 2) - distance;
 
             if (overlap > 0) {
-                lock (_lock) {
-                    // Przesunięcie kul tak, aby nie zachodziły na siebie
-                    double correction = overlap / 2;
+                // Przesunięcie kul tak, aby nie zachodziły na siebie
+                double correction = overlap / 2;
 
-                    double correctionX = correction * nx;
-                    double correctionY = correction * ny;
+                double correctionX = correction * nx;
+                double correctionY = correction * ny;
 
-                    // Nowe pozycje kul
-                    double thisNewX = this.X_position - correctionX;
-                    double thisNewY = this.Y_position - correctionY;
-                    double otherNewX = otherBall.X_position + correctionX;
-                    double otherNewY = otherBall.Y_position + correctionY;
+                // Nowe pozycje kul
+                double thisNewX = this.X_position - correctionX;
+                double thisNewY = this.Y_position - correctionY;
+                double otherNewX = otherBall.X_position + correctionX;
+                double otherNewY = otherBall.Y_position + correctionY;
 
-                    // Upewnienie się, że kule pozostają w granicach planszy
-                    if (thisNewX - this.Radius / 2 >= 0 && thisNewX + this.Radius / 2 <= _Width) {
-                        this.X_position = thisNewX;
-                    }
-                    if (thisNewY - this.Radius / 2 >= 0 && thisNewY + this.Radius / 2 <= _Height) {
-                        this.Y_position = thisNewY;
-                    }
-                    if (otherNewX - otherBall.Radius / 2 >= 0 && otherNewX + otherBall.Radius / 2 <= _Width) {
-                        otherBall.X_position = otherNewX;
-                    }
-                    if (otherNewY - otherBall.Radius / 2 >= 0 && otherNewY + otherBall.Radius / 2 <= _Height) {
-                        otherBall.Y_position = otherNewY;
-                    }
+                // Upewnienie się, że kule pozostają w granicach planszy
+                if (thisNewX - this.Radius / 2 >= 0 && thisNewX + this.Radius / 2 <= _Width) {
+                    this.X_position = thisNewX;
+                }
+                if (thisNewY - this.Radius / 2 >= 0 && thisNewY + this.Radius / 2 <= _Height) {
+                    this.Y_position = thisNewY;
+                }
+                if (otherNewX - otherBall.Radius / 2 >= 0 && otherNewX + otherBall.Radius / 2 <= _Width) {
+                    otherBall.X_position = otherNewX;
+                }
+                if (otherNewY - otherBall.Radius / 2 >= 0 && otherNewY + otherBall.Radius / 2 <= _Height) {
+                    otherBall.Y_position = otherNewY;
                 }
             }
             await Task.CompletedTask;
