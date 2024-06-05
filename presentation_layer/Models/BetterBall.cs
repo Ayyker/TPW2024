@@ -12,6 +12,7 @@ namespace presentation_layer.ViewModels {
         private DispatcherTimer _timer;
         private int _Width;
         private int _Height;
+        private object _logger;
         private readonly IBetterBallRepository _repository;
         private readonly object _lock = new object();
 
@@ -60,7 +61,7 @@ namespace presentation_layer.ViewModels {
             _timer.Interval = TimeSpan.FromMilliseconds(10);  // Ustawienie odpowiedniego interwału
             _timer.Tick += (sender, args) => UpdateBall();
             _timer.Start();
-            Console.WriteLine($"Ball {this.Ball.ID} created with position ({X_position}, {Y_position}) and velocity ({X_velocity}, {Y_velocity}).");
+            this.Ball.Logger.Log($"Ball {this.Ball.ID} created with position ({X_position}, {Y_position}) and velocity ({X_velocity}, {Y_velocity}).");
         }
 
         public void UpdateBall() {
@@ -72,12 +73,12 @@ namespace presentation_layer.ViewModels {
                 if (new_x_position <= 0 || new_x_position + Radius >= _Width) {
                     X_velocity *= -1.0;
                     new_x_position = X_position + X_velocity;
-                    Console.WriteLine($"Ball {this.Ball.ID} bounced horizontally. New velocity: ({X_velocity}, {Y_velocity}).");
+                    this.Ball.Logger.Log($"Ball {this.Ball.ID} bounced horizontally. New velocity: ({X_velocity}, {Y_velocity}).");
                 }
                 if (new_y_position <= 0 || new_y_position + Radius >= _Height) {
                     Y_velocity *= -1.0;
                     new_y_position = Y_position + Y_velocity;
-                    Console.WriteLine($"Ball {this.Ball.ID} bounced vertically. New velocity: ({X_velocity}, {Y_velocity}).");
+                    this.Ball.Logger.Log($"Ball {this.Ball.ID} bounced vertically. New velocity: ({X_velocity}, {Y_velocity}).");
                 }
 
                 X_position = new_x_position;
@@ -85,7 +86,7 @@ namespace presentation_layer.ViewModels {
 
                 foreach (var otherBall in _repository.GetAllBalls().OfType<BetterBall>()) {
                     if (otherBall != this && IsColliding(otherBall)) {
-                        Console.WriteLine($"Ball {this.Ball.ID} collided with Ball {otherBall.Ball.ID}.");
+                        this.Ball.Logger.Log($"Ball {this.Ball.ID} collided with Ball {otherBall.Ball.ID}.");
                         Task.Run(() => ResolveCollision(otherBall));
                     }
                 }
@@ -100,7 +101,7 @@ namespace presentation_layer.ViewModels {
         }
 
         public async Task ResolveCollision(BetterBall otherBall) {
-            Console.WriteLine($"Resolving collision between Ball {this.Ball.ID} and Ball {otherBall.Ball.ID}.");
+            this.Ball.Logger.Log($"Resolving collision between Ball {this.Ball.ID} and Ball {otherBall.Ball.ID}.");
 
             // Wejściowe prędkości
             double vx1 = this.X_velocity;
@@ -174,7 +175,7 @@ namespace presentation_layer.ViewModels {
                 }
             }
             await Task.CompletedTask;
-            Console.WriteLine($"Collision resolved. Ball {this.Ball.ID} new velocity: ({this.X_velocity}, {this.Y_velocity}). Ball {otherBall.Ball_Number} new velocity: ({otherBall.X_velocity}, {otherBall.Y_velocity}).");
+            this.Ball.Logger.Log($"Collision resolved. Ball {this.Ball.ID} new velocity: ({this.X_velocity}, {this.Y_velocity}). Ball {otherBall.Ball_Number} new velocity: ({otherBall.X_velocity}, {otherBall.Y_velocity}).");
         }
 
         public void Stop() {

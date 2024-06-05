@@ -10,8 +10,9 @@ namespace data_layer {
         private double _Radius;
         private string _Color;
         private int _Ball_Number;
+        private readonly Logger _Logger;
 
-        public Ball(double radius, double weight, double x, double y, double x_velocity, double y_velocity, int id, string color) {
+        public Ball(double radius, double weight, double x, double y, double x_velocity, double y_velocity, int id, string color, Logger logger) {
             Radius = radius;
             Weight = weight;
             X_position = x;
@@ -21,6 +22,7 @@ namespace data_layer {
             ID = id;
             Color = color;
             Ball_Number = (id % 15) + 1;
+            _Logger = logger;
         }
         public double Radius {
             get => _Radius;
@@ -60,6 +62,9 @@ namespace data_layer {
             set => _Ball_Number = value;
         }
 
+        public Logger Logger {
+            get => _Logger;
+        }
         public override string ToString() {
             return $"Ball at ({X_position}, {Y_position}) with velocity ({X_velocity}, {Y_velocity}), radius {Radius} and {Color} color.";
         }

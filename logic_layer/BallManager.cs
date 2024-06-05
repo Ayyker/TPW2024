@@ -7,7 +7,7 @@ namespace logic_layer {
         private int _Height;
         private IBallRepository _Ball_Repository;
         private Random random = new Random();
-        private Logger logger;
+        private Logger _logger;
         private List<string> ballColors = new List<string>
        {
             "#ffd400",
@@ -34,7 +34,7 @@ namespace logic_layer {
             _Height = height;
             _Ball_Repository = ballRepository;
             List<Ball> balls = _Ball_Repository.GetAllBalls();
-            logger = new Logger(balls);
+            _logger = new Logger();
         }
         public int Width {
             get => _Width;
@@ -61,7 +61,8 @@ namespace logic_layer {
                             random.NextDouble() * 4,
                             random.NextDouble() * 4,
                             i,
-                            "#010001"
+                            "#010001",
+                            _logger
                             )
                         );
                 }
@@ -75,7 +76,8 @@ namespace logic_layer {
                             random.NextDouble() * 4,
                             random.NextDouble() * 4,
                             i,
-                            ballColors[colorIndex]
+                            ballColors[colorIndex],
+                            _logger
                             )
                         );
                 }
@@ -88,7 +90,7 @@ namespace logic_layer {
 
         public void ClearAllBalls() {
             _Ball_Repository.ClearAllBalls();
-            logger.Stop();
+            _logger.Stop();
         }
         public IReadOnlyList<Ball> GetAllBalls() {
             return _Ball_Repository.GetAllBalls();
